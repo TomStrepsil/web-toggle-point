@@ -25,9 +25,6 @@ ${variantsKeys.map((key) => `  ["${key}", () => ${method}(${webpackMagicComment}
   return code;
 };
 
-const getDynamicRequire = getDynamic.bind(undefined, "require");
-const getDynamicImport = getDynamic.bind(undefined, "import");
-
 const generateJoinPoint = ({ joinPointFiles, path }) => {
   const {
     pointCut: { name, loadingMode, webpackMagicComment },
@@ -35,10 +32,10 @@ const generateJoinPoint = ({ joinPointFiles, path }) => {
   } = joinPointFiles.get(path);
   const pointCutImport = `import pointCut from "${SCHEME}:${POINT_CUTS}:/${name}";`;
   const code = {
-    dynamicImport: getDynamicImport.bind(undefined, webpackMagicComment),
-    dynamicRequire: getDynamicRequire.bind(undefined, ""),
+    dynamicImport: getDynamic.bind(undefined, "import", webpackMagicComment),
+    dynamicRequire: getDynamic.bind(undefined, "require", ""),
     static: getStatic
-  }[loadingMode]({ path, variants, webpackMagicComment });
+  }[loadingMode]({ path, variants });
   return `${pointCutImport}
 ${code}
 export default pointCut({ joinPoint, variants });`;
