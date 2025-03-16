@@ -27,7 +27,7 @@ ${variantsKeys.map((key) => `  ["${key}", () => ${method}(${webpackMagicComment}
 
 const generateJoinPoint = ({ joinPointFiles, path }) => {
   const {
-    pointCut: { name, loadingMode, webpackMagicComment },
+    pointCut: { name, loadingMode, webpackMagicComment = "" },
     variants
   } = joinPointFiles.get(path);
   const pointCutImport = `import pointCut from "${SCHEME}:${POINT_CUTS}:/${name}";`;

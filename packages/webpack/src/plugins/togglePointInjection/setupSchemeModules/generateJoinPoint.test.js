@@ -70,44 +70,47 @@ import * as variant_2 from "${path}${relativePaths[2]}";`);
     });
   });
 
-  describe("with a dynamicImport loadingMode", () => {
-    const webpackMagicComment = "/* test loading qualifier */";
-    beforeEach(() => {
-      const joinPointFiles = new Map([
-        [
-          path,
-          {
-            pointCut: {
-              ...pointCut,
-              loadingMode: "dynamicImport",
-              webpackMagicComment
-            },
-            variants
-          }
-        ]
-      ]);
-      result = generateJoinPoint({
-        joinPointFiles,
-        path
+  describe.each(["/* test loading qualifier */", undefined])(
+    "with a dynamicImport loadingMode, and a %s webpackMagicComment",
+    (webpackMagicComment) => {
+      const expectedMagicComment = webpackMagicComment ?? "";
+      beforeEach(() => {
+        const joinPointFiles = new Map([
+          [
+            path,
+            {
+              pointCut: {
+                ...pointCut,
+                loadingMode: "dynamicImport",
+                webpackMagicComment
+              },
+              variants
+            }
+          ]
+        ]);
+        result = generateJoinPoint({
+          joinPointFiles,
+          path
+        });
       });
-    });
 
-    makeCommonAssertions();
+      makeCommonAssertions();
 
-    it("should return a script that prepares a join point function that will dynamically load the join point, when executed, with any provided webpack loading directives", () => {
-      expect(result).toMatch(
-        `const joinPoint = () => import(${webpackMagicComment}"${path}");`
-      );
-    });
+      it("should return a script that prepares a join point function that will dynamically load the join point, when executed, with any provided webpack loading directives", () => {
+        expect(result).toMatch(
+          `const joinPoint = () => import(${expectedMagicComment}"${path}");`
+        );
+      });
 
-    it("should return a script that creates a Map of variants, keyed by relative path, valued as a function that will dynamically load the variant module when executed, with any provided webpack loading directives", () => {
-      expect(result).toMatch(`const variants = new Map([
-  ["/test-sub-folder/test-variant-1", () => import(${webpackMagicComment}"${path}${relativePaths[0]}")],
-  ["/test-sub-folder/test-variant-2", () => import(${webpackMagicComment}"${path}${relativePaths[1]}")],
-  ["/test-other-sub-folder/test-variant-1", () => import(${webpackMagicComment}"${path}${relativePaths[2]}")]
+      it("should return a script that creates a Map of variants, keyed by relative path, valued as a function that will dynamically load the variant module when executed, with any provided webpack loading directives", () => {
+        expect(result).toMatch(`const variants = new Map([
+  ["/test-sub-folder/test-variant-1", () => import(${expectedMagicComment}"${path}${relativePaths[0]}")],
+  ["/test-sub-folder/test-variant-2", () => import(${expectedMagicComment}"${path}${relativePaths[1]}")],
+  ["/test-other-sub-folder/test-variant-1", () => import(${expectedMagicComment}"${path}${relativePaths[2]}")]
 ]);`);
-    });
-  });
+      });
+    }
+  );
 
   describe("with a dynamicRequire loadingMode", () => {
     beforeEach(() => {
