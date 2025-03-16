@@ -6,14 +6,27 @@
       "items": {
         "type": "object",
         "properties": {
+          "joinPointResolver": {
+            "instanceof": "Function"
+          },
+          "loadingMode": {
+            "anyOf": ["dynamicImport", "dynamicRequire", "static"]
+          },
           "name": { "type": "string" },
-          "togglePointModule": { "type": "string" },
-          "variantGlob": { "type": "string" },
           "toggleHandler": {
             "type": "string"
           },
-          "joinPointResolver": {
-            "instanceof": "Function"
+          "togglePointModule": { "type": "string" },
+          "variantGlob": { "type": "string" }
+        },
+        "if": {
+          "properties": {
+            "loadingMode": { "const": "dynamicImport" }
+          }
+        },
+        "then": {
+          "properties": {
+            "webpackMagicComment": { "type": "string" }
           }
         },
         "additionalProperties": false,
