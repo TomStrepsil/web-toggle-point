@@ -8,7 +8,8 @@ jest.mock("./getVariantFiles", () =>
   jest.fn(() => Symbol("test-variant-files"))
 );
 jest.mock("./fillDefaultOptionalValues", () =>
-  jest.fn(() => ({
+  jest.fn((pointCut) => ({
+    ...pointCut,
     variantGlob: Symbol("test-variant-glob"),
     joinPointResolver: Symbol("test-join-point-resolver")
   }))
@@ -16,9 +17,9 @@ jest.mock("./fillDefaultOptionalValues", () =>
 
 describe("processPointCuts", () => {
   const pointCuts = new Map([
-    ["test-key-1", Symbol("test-point-cut")],
-    ["test-key-2", Symbol("test-point-cut")],
-    ["test-key-3", Symbol("test-point-cut")]
+    ["test-key-1", { ["test-key"]: Symbol("test-point-cut") }],
+    ["test-key-2", { ["test-key"]: Symbol("test-point-cut") }],
+    ["test-key-3", { ["test-key"]: Symbol("test-point-cut") }]
   ]);
   const pointCutsValues = Array.from(pointCuts.values());
   const appRoot = Symbol("test-app-root");
@@ -55,13 +56,15 @@ describe("processPointCuts", () => {
   it("should process the variant files, and keep a shared record of config files found between each point cut", () => {
     for (const [index, pointCut] of pointCutsValues.entries()) {
       const variantFiles = getVariantFiles.mock.results[index].value;
-      const { variantGlob, joinPointResolver } =
-        fillDefaultOptionalValues.mock.results[index].value;
+      const defaults = fillDefaultOptionalValues.mock.results[index].value;
+      const { variantGlob } = defaults;
       expect(processVariantFiles).toHaveBeenCalledWith({
         variantFiles,
         joinPointFiles,
-        pointCut,
-        joinPointResolver,
+        pointCut: {
+          ...pointCut,
+          ...defaults
+        },
         variantGlob,
         warnings,
         configFiles: expect.any(Map),

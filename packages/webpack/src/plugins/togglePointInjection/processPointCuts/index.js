@@ -10,9 +10,9 @@ const processPointCuts = async ({
   const joinPointFiles = new Map();
   const configFiles = new Map();
   const warnings = [];
-  for await (const pointCut of pointCuts.values()) {
-    const { variantGlob, joinPointResolver } =
-      fillDefaultOptionalValues(pointCut);
+  for await (const configuredPointCut of pointCuts.values()) {
+    const pointCut = fillDefaultOptionalValues(configuredPointCut);
+    const { variantGlob } = pointCut;
 
     const variantFiles = await getVariantFiles({
       variantGlob,
@@ -24,7 +24,6 @@ const processPointCuts = async ({
       variantFiles,
       joinPointFiles,
       pointCut,
-      joinPointResolver,
       variantGlob,
       warnings,
       configFiles,
