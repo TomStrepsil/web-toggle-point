@@ -5,8 +5,7 @@ const { resolve, basename, join, sep } = posix;
 
 describe("processVariantFiles", () => {
   let joinPointFiles;
-  const pointCut = { name: "test-point-cut" };
-  const joinPointResolver = jest.fn();
+  const pointCut = { name: "test-point-cut", joinPointResolver: jest.fn() };
   let warnings;
 
   const variantFileGlob = "test-variant-*.*";
@@ -30,7 +29,6 @@ describe("processVariantFiles", () => {
       configFiles,
       joinPointFiles,
       pointCut,
-      joinPointResolver,
       variantGlob,
       warnings,
       name: moduleFile,
@@ -71,7 +69,7 @@ describe("processVariantFiles", () => {
 
       describe("when given a variant file that has no matching join point file", () => {
         beforeEach(async () => {
-          joinPointResolver.mockReturnValue(
+          pointCut.joinPointResolver.mockReturnValue(
             join(joinPointFolder, "test-not-matching-control")
           );
           await act({ variantFiles, configFiles: new Map() });
@@ -85,7 +83,7 @@ describe("processVariantFiles", () => {
 
       describe("when given a variant file that has a matching join point file", () => {
         beforeEach(async () => {
-          joinPointResolver.mockReturnValue(joinPointPath);
+          pointCut.joinPointResolver.mockReturnValue(joinPointPath);
         });
 
         describe("and no config file precludes it being valid", () => {
@@ -93,7 +91,7 @@ describe("processVariantFiles", () => {
             await act({ variantFiles, configFiles: new Map() });
           });
 
-          it("should add no warnings, and add a single joinPointFile representing the matched join point", async () => {
+          it("should add no warnings, and add a single joinPointFile representing the matched join point, relative to the control module", async () => {
             expect(warnings).toEqual([]);
             expect(joinPointFiles).toEqual(
               new Map([
