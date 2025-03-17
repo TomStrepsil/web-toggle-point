@@ -3,7 +3,7 @@ export default ({ togglePoint, joinPoint, variants }) => {
     const [, , value] = key.split("/");
     const list = value.split(",");
     for (const value of list) {
-      map.set(value, variants(key));
+      map.set(value, variants.get(key));
     }
     return map;
   }, new Map());
