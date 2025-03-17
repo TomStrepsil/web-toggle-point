@@ -16,9 +16,9 @@ class Logger {
       }
     ] of joinPointFiles.entries()) {
       this.#logger.info(
-        `Identified '${name}' point cut for join point '${joinPoint}' with potential variants:\n${variants.join(
-          "\n"
-        )}`
+        `Identified '${name}' point cut for join point '${joinPoint}' with potential variants:\n${[
+          ...variants.values()
+        ].join("\n")}`
       );
     }
   }
