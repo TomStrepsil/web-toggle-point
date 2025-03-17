@@ -61,10 +61,11 @@ describe("processVariantFiles", () => {
   `(
     "when given a variant path ($variantFilePath)",
     ({ variantFilePath, expectedVariant }) => {
+      const path = resolve(joinPointFolder, variantFilePath);
       const variantFiles = [
         {
           name: basename(variantFilePath),
-          path: resolve(joinPointFolder, variantFilePath)
+          path
         }
       ];
 
@@ -100,7 +101,7 @@ describe("processVariantFiles", () => {
                   joinPointPath,
                   {
                     pointCut,
-                    variants: [expectedVariant]
+                    variants: new Map([[expectedVariant, path]])
                   }
                 ]
               ])
@@ -126,7 +127,7 @@ describe("processVariantFiles", () => {
                   joinPointPath,
                   {
                     pointCut,
-                    variants: [expectedVariant]
+                    variants: new Map([[expectedVariant, path]])
                   }
                 ]
               ])

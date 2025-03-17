@@ -27,7 +27,7 @@ const processVariantFiles = async ({
       }
       joinPointFiles.set(joinPointPath, {
         pointCut,
-        variants: []
+        variants: new Map()
       });
     }
 
@@ -39,8 +39,9 @@ const processVariantFiles = async ({
       continue;
     }
 
-    joinPointFile.variants.push(
-      relative(joinDirectory, path).replace(/^([^./])/, "./$1")
+    joinPointFile.variants.set(
+      relative(joinDirectory, path).replace(/^([^./])/, "./$1"),
+      path
     );
   }
 };
