@@ -10,7 +10,7 @@
             "instanceof": "Function"
           },
           "loadingMode": {
-            "anyOf": ["dynamicImport", "dynamicRequire", "static"]
+            "anyOf": [{ "const": "dynamicImport" }, { "const": "dynamicRequire" }, { "const":  "static" }]
           },
           "name": { "type": "string" },
           "toggleHandler": {
