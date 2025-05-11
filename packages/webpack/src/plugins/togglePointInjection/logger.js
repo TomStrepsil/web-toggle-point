@@ -11,13 +11,13 @@ class Logger {
     for (const [
       joinPoint,
       {
-        variants,
+        variantPathMap,
         pointCut: { name }
       }
     ] of joinPointFiles.entries()) {
       this.#logger.info(
         `Identified '${name}' point cut for join point '${joinPoint}' with potential variants:\n${[
-          ...variants.values()
+          ...variantPathMap.values()
         ].join("\n")}`
       );
     }

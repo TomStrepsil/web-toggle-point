@@ -9,28 +9,14 @@
           "joinPointResolver": {
             "instanceof": "Function"
           },
-          "loadingMode": {
-            "anyOf": [{ "const": "dynamicImport" }, { "const": "dynamicRequire" }, { "const":  "static" }]
-          },
           "name": { "type": "string" },
-          "toggleHandler": {
+          "toggleHandlerFactoryModuleSpecifier": {
             "type": "string"
           },
-          "togglePointModule": { "type": "string" },
+          "togglePointModuleSpecifier": { "type": "string" },
           "variantGlob": { "type": "string" }
         },
-        "if": {
-          "properties": {
-            "loadingMode": { "const": "dynamicImport" }
-          }
-        },
-        "then": {
-          "properties": {
-            "webpackMagicComment": { "type": "string" }
-          }
-        },
-        "additionalProperties": false,
-        "required": ["name", "togglePointModule"]
+        "required": ["name", "togglePointModuleSpecifier"]
       }
     },
     "webpackNormalModule": {

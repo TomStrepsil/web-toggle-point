@@ -1,6 +1,7 @@
 import Logger from "./logger";
 import { PLUGIN_NAME } from "./constants";
 
+
 jest.mock("./constants", () => ({
   PLUGIN_NAME: "test-plugin-name"
 }));
@@ -21,7 +22,7 @@ describe("logger", () => {
   describe("logJoinPoints", () => {
     const pointCut = { name: "test-point-cut" };
     const joinPointName = "test-join-point";
-    const variants = new Map([
+    const variantPathMap = new Map([
       ["test-key-1", "test-path-1"],
       ["test-key-2", "test-key-2"]
     ]);
@@ -29,7 +30,7 @@ describe("logger", () => {
       [
         joinPointName,
         {
-          variants,
+          variantPathMap,
           pointCut: { name: "test-point-cut" }
         }
       ]
@@ -44,7 +45,7 @@ describe("logger", () => {
         `Identified '${
           pointCut.name
         }' point cut for join point '${joinPointName}' with potential variants:\n${Array.from(
-          variants.values()
+          variantPathMap.values()
         ).join("\n")}`
       );
     });

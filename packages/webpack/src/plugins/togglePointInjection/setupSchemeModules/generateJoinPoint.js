@@ -1,44 +1,20 @@
 import { POINT_CUTS, SCHEME } from "../constants.js";
 
-const getStatic = ({ path, variants }) => {
-  const variantsKeys = Array.from(variants.keys());
-  const code = `import * as joinPoint from "${path}";
-${variantsKeys
-  .map(
-    (key, index) => `import * as variant_${index} from "${variants.get(key)}";`
-  )
-  .join("\n")}
-const variants = new Map([
-${variantsKeys.map((relativePath, index) => `  ["${relativePath}", variant_${index}]`).join(",\n")}
-]);`;
-
-  return code;
-};
-
-const getDynamic = (method, webpackMagicComment, { path, variants }) => {
-  const variantsKeys = Array.from(variants.keys());
-  const code = `const joinPoint = () => ${method}(${webpackMagicComment}"${path}");
-const variants = new Map([
-${variantsKeys.map((key) => `  ["${key}", () => ${method}(${webpackMagicComment}"${variants.get(key)}")]`).join(",\n")}
-]);`;
-
-  return code;
-};
-
-const generateJoinPoint = ({ joinPointFiles, path }) => {
+const generateJoinPoint = ({ joinPointFiles, joinPointPath }) => {
   const {
-    pointCut: { name, loadingMode, webpackMagicComment = "" },
-    variants
-  } = joinPointFiles.get(path);
+    pointCut: {
+      name,
+      loadStrategy: { importCodeGenerator }
+    },
+    variantPathMap
+  } = joinPointFiles.get(joinPointPath);
   const pointCutImport = `import pointCut from "${SCHEME}:${POINT_CUTS}:/${name}";`;
-  const code = {
-    dynamicImport: getDynamic.bind(undefined, "import", webpackMagicComment),
-    dynamicRequire: getDynamic.bind(undefined, "require", ""),
-    static: getStatic
-  }[loadingMode]({ path, variants });
+
+  const code = importCodeGenerator({ joinPointPath, variantPathMap });
+
   return `${pointCutImport}
 ${code}
-export default pointCut({ joinPoint, variants });`;
+export default pointCut({ joinPoint, variantPathMap });`;
 };
 
 export default generateJoinPoint;

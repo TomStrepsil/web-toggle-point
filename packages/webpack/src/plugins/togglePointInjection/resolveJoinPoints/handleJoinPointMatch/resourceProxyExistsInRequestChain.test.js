@@ -1,6 +1,7 @@
 import resourceProxyExistsInRequestChain from "./resourceProxyExistsInRequestChain";
 import { createMockGraph } from "../../../../../test/test-utils";
 
+
 const moduleGraph = { getIncomingConnections: jest.fn() };
 const proxyResource = Symbol("test-proxy-resource");
 

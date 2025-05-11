@@ -1,8 +1,8 @@
+import { memfs } from "memfs";
+import { join } from "path";
+import validateConfigSchema from "./validateConfigSchema";
 import { TOGGLE_CONFIG } from "../../constants";
 import isJoinPointInvalid from "./isJoinPointInvalid";
-import { memfs } from "memfs";
-import validateConfigSchema from "./validateConfigSchema";
-import { join } from "path";
 
 jest.mock("../../constants", () => ({
   TOGGLE_CONFIG: "test-toggle-config-filename"

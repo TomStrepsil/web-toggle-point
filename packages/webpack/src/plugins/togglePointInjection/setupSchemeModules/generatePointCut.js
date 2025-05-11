@@ -1,13 +1,15 @@
-const generatePointCut = ({ pointCuts, path }) => {
-  const pointCutName = path.slice(1);
+const generatePointCut = ({ pointCuts, joinPointPath }) => {
+  const pointCutName = joinPointPath.slice(1);
   const {
-    togglePointModule,
-    toggleHandler = "@asos/web-toggle-point-webpack/pathSegmentToggleHandler"
+    togglePointModuleSpecifier,
+    toggleHandlerFactoryModuleSpecifier,
+    loadStrategy: { adapterModuleSpecifier }
   } = pointCuts.find(({ name }) => name === pointCutName);
-
-  return `import togglePoint from "${togglePointModule}";
-import handler from "${toggleHandler}";
-export default (rest) => handler({ togglePoint, ...rest });`;
+  return `import togglePoint from "${togglePointModuleSpecifier}";
+import handlerFactory from "${toggleHandlerFactoryModuleSpecifier}";
+import { pack, unpack } from "${adapterModuleSpecifier}";
+const handler = handlerFactory({ togglePoint, pack, unpack });
+export default handler;`;
 };
 
 export default generatePointCut;
