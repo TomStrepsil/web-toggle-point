@@ -1,7 +1,4 @@
-import deferredRequireLoadStrategyFactory, {
-  pack,
-  unpack
-} from "./deferredRequireLoadStrategyFactory.js";
+import deferredRequireLoadStrategyFactory, * as namespace from "./deferredRequireLoadStrategyFactory.js";
 
 const path = "/test-folder/test-path";
 const relativePaths = [
@@ -55,9 +52,8 @@ describe("deferredRequireLoadStrategyFactory", () => {
   });
 
   describe("pack", () => {
-    it("should return the expression passed to it", () => {
-      const expression = Symbol("test");
-      expect(pack(expression)).toBe(expression);
+    it("should not export a pack function, so that the default (identity function) is used", () => {
+      expect(namespace.pack).toBe(undefined); // eslint-disable-line import/namespace
     });
   });
 
@@ -65,7 +61,7 @@ describe("deferredRequireLoadStrategyFactory", () => {
     it("should call the expression passed to it as a function, and return the result", () => {
       const expected = Symbol("test");
       const expression = () => expected;
-      expect(unpack(expression)).toBe(expected);
+      expect(namespace.unpack(expression)).toBe(expected);
     });
   });
 });

@@ -13,8 +13,6 @@ ${variantsKeys
   .join("\n")}
 ${createVariantPathMap(variantsKeys.map((key, index) => `  ["${key}", variant_${index}]`).join(",\n"))}`;
 };
-export const pack = (expression) => expression;
-export const unpack = (expression) => expression;
 export default () => {
   return {
     adapterModuleSpecifier,

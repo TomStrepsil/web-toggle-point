@@ -1,7 +1,4 @@
-import staticLoadStrategyFactory, {
-  pack,
-  unpack
-} from "./staticLoadStrategyFactory.js";
+import staticLoadStrategyFactory, * as namespace from "./staticLoadStrategyFactory.js";
 
 const path = "/test-folder/test-path";
 const relativePaths = [
@@ -61,16 +58,14 @@ import * as variant_2 from "${path}${relativePaths[2]}";`);
   });
 
   describe("pack", () => {
-    it("should return the expression passed to it", () => {
-      const expression = Symbol("test");
-      expect(pack(expression)).toBe(expression);
+    it("should not export a pack function, so that the default (identity function) is used", () => {
+      expect(namespace.pack).toBe(undefined); // eslint-disable-line import/namespace
     });
   });
 
   describe("unpack", () => {
-    it("should return the expression passed to it", () => {
-      const expression = Symbol("test");
-      expect(unpack(expression)).toBe(expression);
+    it("should not export an unpack function, so that the default (identity function) is used", () => {
+      expect(namespace.unpack).toBe(undefined); // eslint-disable-line import/namespace
     });
   });
 });

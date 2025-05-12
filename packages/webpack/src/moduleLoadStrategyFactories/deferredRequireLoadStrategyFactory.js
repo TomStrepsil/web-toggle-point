@@ -1,6 +1,5 @@
 import dynamicLoadCodeGenerator from "./internal/dynamicLoadCodeGenerator";
 
-export const pack = (expression) => expression;
 export const unpack = (expression) => expression();
 export default () => ({
   adapterModuleSpecifier: import.meta.filename,

@@ -39,15 +39,18 @@ describe("generatePointCut", () => {
     );
   });
 
-  it("should return a script that imports the pack and unpack exports of the appropriate adapter module", () => {
+  it("should return a script that imports the pack and unpack exports of the appropriate adapter module, via the namespace, falling back to an identity function if the adapter does not export a pack/unpack handler", () => {
+    // N.B. The pack and unpack functions must be aliased during the import to mitigate https://github.com/webpack/webpack/issues/19518
     expect(result).toMatch(
-      `import { pack, unpack } from "${adapterModuleSpecifier}";`
+      `import * as namespace from "${adapterModuleSpecifier}";
+const identity = (module) => module;
+const { pack:_pack = identity, unpack:_unpack = identity } = namespace;`
     );
   });
 
   it("should return a script that constructs a toggle handler, passing the toggle point to the factory, plus the pack and unpack functions from the load strategy adapter", () => {
     expect(result).toMatch(
-      "const handler = handlerFactory({ togglePoint, pack, unpack });"
+      "const handler = handlerFactory({ togglePoint, pack: _pack, unpack: _unpack });"
     );
   });
 
