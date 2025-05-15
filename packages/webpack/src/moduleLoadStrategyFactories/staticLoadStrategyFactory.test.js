@@ -21,7 +21,7 @@ describe("staticLoadStrategyFactory", () => {
     expect(result).toEqual(
       expect.objectContaining({
         adapterModuleSpecifier: expect.stringMatching(
-          /packages(\\+|\/)webpack\1src\1moduleLoadStrategyFactories\1staticLoadStrategyFactory\.js$/ // TODO: make work on windows!
+          /packages(\\+|\/)webpack\1src\1moduleLoadStrategyFactories\1staticLoadStrategyFactory\.js$/
         ),
         importCodeGenerator: expect.any(Function)
       })
