@@ -1,4 +1,5 @@
 import joinPointResolver from "../../joinPointResolver.js";
+// eslint-disable-next-line import/no-unresolved -- https://github.com/import-js/eslint-plugin-import/issues/1810
 import loadStrategyFactory from "@asos/web-toggle-point-webpack/moduleLoadStrategyFactories/staticLoadStrategyFactory";
 
 export default {
