@@ -9,6 +9,21 @@
           "joinPointResolver": {
             "instanceof": "Function"
           },
+          "loadStrategy": {
+            "type": "object",
+            "properties": {
+              "importCodeGenerator": {
+                "instanceof": "Function"
+              },
+              "pack": {
+                "instanceof": "Function"
+              },
+              "unpack": {
+                "instanceof": "Function"
+              }
+            },
+            "required": ["importCodeGenerator"]
+          },
           "name": { "type": "string" },
           "toggleHandlerFactoryModuleSpecifier": {
             "type": "string"
@@ -16,6 +31,7 @@
           "togglePointModuleSpecifier": { "type": "string" },
           "variantGlob": { "type": "string" }
         },
+        "additionalProperties": false,
         "required": ["name", "togglePointModuleSpecifier"]
       }
     },
