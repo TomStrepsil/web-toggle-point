@@ -16,8 +16,8 @@ N.B. NextJs support is currently experimental, see [caveats](#caveats).
 
 ## Caveats
 
-- Only client components can be toggled using a per-request features store, since request-bound context is not supported by server components.  They are not meant to be stateful.
-  - API routes may be supportable, via use of [an async local storage wrapper](https://github.com/rexfordessilfie/nextwrappers/tree/main/packages/async-local-storage), once support for named exports is added ([Issue #4](https://github.com/ASOS/web-toggle-point/issues/4)) - since would need to match the HTTP verbs.
-- The webpack package cannot currently vary NextJs managed files such as [pages](https://nextjs.org/docs/app/building-your-application/routing/pages) themselves, but can vary modules they import ([Issue #9](https://github.com/ASOS/web-toggle-point/issues/9)).
+- Only client components can be toggled using a per-request features store, since request-bound context is not supported by server components.  They are not meant to be stateful
+  - API routes may be supportable, via use of [an async local storage wrapper](https://github.com/rexfordessilfie/nextwrappers/tree/main/packages/async-local-storage), once support for named exports is added ([Issue #4](https://github.com/ASOS/web-toggle-point/issues/4)) - since would need to match the HTTP verbs
+- The webpack package cannot currently vary NextJs managed files such as [pages](https://nextjs.org/docs/app/building-your-application/routing/pages) themselves, but can vary modules they import ([Issue #9](https://github.com/ASOS/web-toggle-point/issues/9))
 - The `webpack` plugin uses webpack hooks, so is incompatible with the new TurboPack bundler
 - The `webpack` plugin uses Node JS APIs to access the filesystem, so may be incompatible with [the edge runtime](https://nextjs.org/docs/app/api-reference/edge#unsupported-apis)
