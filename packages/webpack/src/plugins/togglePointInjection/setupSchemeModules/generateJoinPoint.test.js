@@ -1,7 +1,6 @@
 import { POINT_CUTS, SCHEME } from "../constants.js";
 import generateJoinPoint from "./generateJoinPoint.js";
 
-
 jest.mock("../constants", () => ({
   SCHEME: "test-scheme",
   POINT_CUTS: "test-point-cuts"

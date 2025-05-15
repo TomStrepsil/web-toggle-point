@@ -1,6 +1,5 @@
 import pathSegmentToggleHandlerFactory from "./pathSegment.js";
 
-
 const toggleOutcome = Symbol("test-outcome");
 const togglePoint = jest.fn(() => toggleOutcome);
 const pack = jest.fn(() => Symbol("packed"));

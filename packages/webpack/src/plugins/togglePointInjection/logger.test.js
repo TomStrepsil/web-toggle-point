@@ -1,7 +1,6 @@
 import Logger from "./logger";
 import { PLUGIN_NAME } from "./constants";
 
-
 jest.mock("./constants", () => ({
   PLUGIN_NAME: "test-plugin-name"
 }));
