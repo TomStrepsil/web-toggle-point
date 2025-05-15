@@ -14,6 +14,12 @@ N.B. See changelogs for individual packages, where most change will occur:
 
 This log covers the [monorepo](https://en.wikipedia.org/wiki/Monorepo).
 
+## [0.10.5] - 2025-??
+
+### Fixed
+
+- remove `react` and `react-dom` from repo root package.json, introduced in [version 0.9.0](#090---2024-11-29)
+
 ## [0.10.4] - 2025-03-06
 
 ### Fixed
