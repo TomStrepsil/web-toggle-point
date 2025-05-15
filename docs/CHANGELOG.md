@@ -20,6 +20,10 @@ This log covers the [monorepo](https://en.wikipedia.org/wiki/Monorepo).
 
 - remove `react` and `react-dom` from repo root package.json, introduced in [version 0.9.0](#090---2024-11-29)
 
+### Added
+
+- `test:unit:coverage` script
+
 ## [0.10.4] - 2025-03-06
 
 ### Fixed
