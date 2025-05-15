@@ -15,6 +15,7 @@ It demonstrates a setup that utilises the `toggleHandler`, `variantGlob`, and `c
       - `/src/fixtures/translation/languages/pt-BR/translations.json` (variant)
     - This uses a `joinPointGlob` setting that points to a single file, rather than attempting to match in sub-directories.
     - This uses a bespoke toggle handler to match the language to the path.
+    - This uses the `staticLoadStrategyFactory` from the `webpack` package, meaning all variant modules are imported at application bootstrap.
 2. selecting a site-specific method, based on a site prefix of the url.
     - This uses modules stored at:
       - `/src/fixtures/config/somethingSiteSpecific.js` (default)
@@ -31,6 +32,7 @@ It demonstrates a setup that utilises the `toggleHandler`, `variantGlob`, and `c
       - `/src/fixtures/audience/cohort-2/bespoke-experience.js` (variant)
     - This uses a bespoke `controlResolver` which matches an alternate file name for the default to the variants.
     - This uses a bespoke toggle handler which has no parent folder for variant folders, which are matched using a naming convention in the glob.
+    - This uses a `deferredDynamicImportLoadStrategyFactory` from the `webpack` package, producing lazy-loaded chunks for variant code.
 4. selecting a theme-specific method, based on a date
     - This uses modules stored at:
       - `/src/fixtures/event/theme.css` (default)
