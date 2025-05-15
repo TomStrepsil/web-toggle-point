@@ -20,15 +20,17 @@
     "lint:docs": "eslint *.md --flag unstable_config_lookup_from_file"
   },
   "dependencies": {
-    "@asos/web-toggle-point-react-pointcuts": "file:../../packages/react-pointcuts",
     "@asos/web-toggle-point-features": "file:../../packages/features",
+    "@asos/web-toggle-point-react-pointcuts": "file:../../packages/react-pointcuts",
     "@asos/web-toggle-point-ssr": "file:../../packages/ssr",
     "@asos/web-toggle-point-webpack": "file:../../packages/webpack",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "http-status-codes": "^2.3.0",
-    "react": ">=17",
-    "react-dom": ">=17"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-is": "^18.3.1",
+    "source-map-loader": "^5.0.0"
   },
   "devDependencies": {
     "babel-loader": "^9.2.1",
@@ -37,7 +39,7 @@
     "path-exists-cli": "^2.0.0",
     "prop-types": "^15.7.2",
     "style-loader": "^4.0.0",
-    "webpack": "^5.38.1",
+    "webpack": "^5.99.7",
     "webpack-cli": "^4.7.2",
     "webpack-node-externals": "^3.0.0"
   },

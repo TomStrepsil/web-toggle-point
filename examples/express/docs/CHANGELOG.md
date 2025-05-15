@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - ??
+
+### Changed
+
+- added `source-map` devtool and `source-map-loader` to add in visualisation of the module structure in browser developer tools
+- fixed to exact version of `react` in `dependencies`, and brought in version-linked `react-is`, a new required peer dependency of the `react-pointcuts` package
+- updated the `config` example to utilise the `lazyComponentLoadStrategyFactory` from the `react-pointcuts` package
+- updated the `animals` example to utilise the `staticLoadStrategyFactory` from the `webpack` package
+- updated `webpack` to `5.99.7`
+
 ## [0.2.3] - 2024-12-24
 
 ### Changed
