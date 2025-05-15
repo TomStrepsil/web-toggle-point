@@ -36,7 +36,7 @@ describe("lazyComponentLoadStrategyFactory", () => {
     expect(result).toEqual(
       expect.objectContaining({
         adapterModuleSpecifier: expect.stringMatching(
-          /packages\/react-pointcuts\/src\/lazyComponentLoadStrategyFactory\.js$/ // TODO: make work on windows!
+          /packages(\\+|\/)react-pointcuts\1src\1lazyComponentLoadStrategyFactory\.js$/
         )
       })
     );

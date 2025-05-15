@@ -1,3 +1,4 @@
+/* eslint-disable import/namespace */
 import staticLoadStrategyFactory, * as namespace from "./staticLoadStrategyFactory.js";
 
 const path = "/test-folder/test-path";
@@ -20,7 +21,7 @@ describe("staticLoadStrategyFactory", () => {
     expect(result).toEqual(
       expect.objectContaining({
         adapterModuleSpecifier: expect.stringMatching(
-          /packages\/webpack\/src\/moduleLoadStrategyFactories\/staticLoadStrategyFactory\.js$/
+          /packages(\\+|\/)webpack\1src\1moduleLoadStrategyFactories\1staticLoadStrategyFactory\.js$/ // TODO: make work on windows!
         ),
         importCodeGenerator: expect.any(Function)
       })
@@ -59,13 +60,13 @@ import * as variant_2 from "${path}${relativePaths[2]}";`);
 
   describe("pack", () => {
     it("should not export a pack function, so that the default (identity function) is used", () => {
-      expect(namespace.pack).toBe(undefined); // eslint-disable-line import/namespace
+      expect(namespace.pack).toBe(undefined);
     });
   });
 
   describe("unpack", () => {
     it("should not export an unpack function, so that the default (identity function) is used", () => {
-      expect(namespace.unpack).toBe(undefined); // eslint-disable-line import/namespace
+      expect(namespace.unpack).toBe(undefined);
     });
   });
 });

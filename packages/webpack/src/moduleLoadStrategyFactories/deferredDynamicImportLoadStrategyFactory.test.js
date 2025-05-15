@@ -1,3 +1,4 @@
+/* eslint-disable import/namespace */
 import deferredDynamicImportLoadStrategyFactory, * as namespace from "./deferredDynamicImportLoadStrategyFactory.js";
 
 const path = "/test-folder/test-path";
@@ -20,7 +21,7 @@ describe("deferredDynamicImportLoadStrategyFactory", () => {
     expect(result).toEqual(
       expect.objectContaining({
         adapterModuleSpecifier: expect.stringMatching(
-          /packages\/webpack\/src\/moduleLoadStrategyFactories\/deferredDynamicImportLoadStrategyFactory\.js$/
+          /packages(\\+|\/)webpack\1src\1moduleLoadStrategyFactories\1deferredDynamicImportLoadStrategyFactory\.js$/
         ),
         importCodeGenerator: expect.any(Function)
       })
@@ -52,7 +53,7 @@ describe("deferredDynamicImportLoadStrategyFactory", () => {
 
   describe("pack", () => {
     it("should not export a pack function, so that the default (identity function) is used", () => {
-      expect(namespace.pack).toBe(undefined); // eslint-disable-line import/namespace
+      expect(namespace.pack).toBe(undefined);
     });
   });
 
