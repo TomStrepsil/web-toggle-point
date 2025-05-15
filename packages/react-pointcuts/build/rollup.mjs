@@ -1,4 +1,3 @@
-import pkg from "../package.json" with { type: "json" };
 import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import external from "rollup-plugin-auto-external";
@@ -8,22 +7,25 @@ import keepExternalComments from "./keepExternalComments.mjs";
 
 export default ({ config_isClient }) => {
   const CLIENT = JSON.parse(config_isClient);
-  const [esOutputFile, cjsOutputFile, extraPlugins] = {
-    false: [pkg.exports.node.import, pkg.exports.node.require, []],
-    true: [pkg.exports.default.import, pkg.exports.default.require, [terser()]]
-  }[CLIENT];
-
   return {
-    input: "./src/index.js",
+    input: {
+      main: "./src/index.js",
+      lazyComponentLoadStrategyFactory:
+        "./src/lazyComponentLoadStrategyFactory.js"
+    },
     output: [
       {
-        file: esOutputFile,
+        dir: "lib/",
+        exports: "named",
         format: "es",
+        entryFileNames: "[name].js",
         sourcemap: true
       },
       {
-        file: cjsOutputFile,
+        dir: "lib/",
+        exports: "named",
         format: "cjs",
+        entryFileNames: "[name].es5.cjs",
         sourcemap: true
       }
     ],
@@ -39,7 +41,7 @@ export default ({ config_isClient }) => {
       }),
       commonjs(),
       external(),
-      ...extraPlugins
+      ...[CLIENT ? terser() : []]
     ],
     preserveSymlinks: true
   };
