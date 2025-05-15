@@ -64,7 +64,6 @@ describe("resolveJoinPoints", () => {
       beforeEach(() => {
         [, beforeResolveCallback] =
           normalModuleFactory.hooks.beforeResolve.tapPromise.mock.lastCall;
-        // handleJoinPointMatch.mockClear();
         jest.clearAllMocks();
         beforeResolveCallback();
       });
