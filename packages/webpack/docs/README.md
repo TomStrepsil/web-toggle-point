@@ -34,16 +34,22 @@ The plugin constructor takes `TogglePointInjectionOptions` thus:
 ```typescript
 import { NormalModule } from 'webpack';
 
+interface LoadStrategy {
+  adapterModuleSpecifier: string,
+  importCodeGenerator: ({ joinPointPath: string, variantPathMap: Map<string, string> }) => string
+}
+
 interface PointCut {
   name: string;
   togglePointModuleSpecifier: string;
   variantGlob?: string;
   joinPointResolver?: (variantPath: string) => string;
+  toggleHandlerFactoryModuleSpecifier: string;
+  loadStrategy: LoadStrategy
 }
 
 interface TogglePointInjectionOptions {
   pointCuts: PointCut[];
-  toggleHandler?: string;
   webpackNormalModule?: () => typeof NormalModule;
 }
 ```
