@@ -63,18 +63,18 @@ interface TogglePointInjectionOptions {
 
 #### _`name`_
 
-Each toggling concern should be expressed in the configured `name` of the `PointCut`.  This name appears in logs and in dev tools for browser code, but otherwise can be anything.
+Each toggling concern should be expressed in the configured `name` of the `PointCut`.  This name appears in logs and in dev tools for browser code, but otherwise does not affect functionality.
 
 #### _`togglePointModuleSpecifier`_
 
-The [module specifier](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#:~:text=The%20module%20specifier%20provides%20a%20string%20that%20the%20JavaScript%20environment%20can%20resolve%20to%20a%20path%20to%20the%20module%20file) should be resolvable by webpack.
+A [module specifier](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#:~:text=The%20module%20specifier%20provides%20a%20string%20that%20the%20JavaScript%20environment%20can%20resolve%20to%20a%20path%20to%20the%20module%20file) pointing to code that holds a "toggle point", the place in code where module selection decisions are made at runtime.  This should be resolvable by webpack.
 
 It's paramount that this module is compatible with the modules it is varying.  e.g.
 
 - a toggle point that utilises browser APIs as part of making its choice or enacting side-effects should only target browser code.  
 - a toggle point that utilises [React](https://react.dev/) can only toggle react code, since use of such APIs outside of the react runtime would produce a runtime error.
 
-Also, the interface of the toggle point, and the variations that it may supplant, needs to be interchangeable with the base/default module. [Liskov Substitution Principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) must apply; functionality may differ, but it must still be compatible with all the consumers of the base module.
+Also, the interface of the toggle point, and the variations that it may supplant, needs to be interchangeable with the base/default module. [Liskov Substitution Principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) must apply. Functionality may differ, but it must still be compatible with all the consumers of the base module.
 
 #### _`variantGlob`_
 
@@ -84,7 +84,7 @@ This can be as specific or generic as needed, but ideally the most specific poss
 
 It should match modules that are compatible with the `togglePointModuleSpecifier` - e.g. if all React code is held within a `/components` folder, it makes sense to include this in the glob path to avoid inadvertently toggling non-react code (should a variant be set up for non-React code without considering the configuration).
 
-This glob holds the key for the naming convention approach that underpins the toggle point project, since it is the definition of the join point triggers.
+This glob is a key part of the naming convention approach that underpins the toggle point project, since it defines the join point triggers.
 
 If not supplied, a default `glob` of `/**/__variants__/*/*/!(*.test).{js,jsx,ts,tsx}` is used.
 
@@ -101,15 +101,9 @@ If not supplied, a default `glob` of `/**/__variants__/*/*/!(*.test).{js,jsx,ts,
 
 [^3]: The double underscore aligns with a convention from jest (that used `__mocks__`) and supports natively opting-out of the filesystem conventions used by popular filesystem routing frameworks [Next.js](https://nextjs.org/) and [Remix](https://remix.run/) (rollup/vite version of this plugin to be made available in [Issue #7](https://github.com/ASOS/web-toggle-point/issues/7))
 
-#### _`toggleHandler`_
-
-This module unpicks the [WebPack context module](https://webpack.js.org/guides/dependency-management/#context-module-api) produced by enacting the configured `variantGlob` and converts it into a form suitable for the configured `togglePoint`.
-
-If not supplied, a default handler (`@asos/web-toggle-point-webpack/toggleHandlerFactories/pathSegment`) is used, compatible with the default `variantGlob`, that converts the matched paths into a tree data structure held in a `Map`, with each path segment as a node in the tree, and the variant modules as the leaf nodes.
-
 #### _`joinPointResolver`_
 
-This marries with the `variantGlob`, in that it "undoes" the variation in file path made to the base/default module.
+This marries with the `variantGlob`, in that it "undoes" the variation in file path made from the base/default.
 
 For every variant path found, the plugin executes this method to locate the related base/default path.
 
@@ -130,6 +124,38 @@ e.g. a variant at `./__variants__/feature-name/variant-name/module.js` will reso
 >   "joinPoints": ["validJoinPoint.js", "anotherValidJoinPoint.js"] 
 >}
 >```
+
+#### _`toggleHandlerFactoryModuleSpecifier`_
+
+A [module specifier](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#:~:text=The%20module%20specifier%20provides%20a%20string%20that%20the%20JavaScript%20environment%20can%20resolve%20to%20a%20path%20to%20the%20module%20file) pointing to code that holds a "toggle handler factory".  
+
+This is another key part of the filesystem naming convention, in that it takes absolute paths from the filesystem and converts them into a data structure appropriate for the potential features that can be selected.  That data structure is passed to the "toggle point" (as defined by the `togglePointModuleSpecifier`) as a "featuresMap".
+
+This factory receives a `Map` keyed by file paths relative to the base/control module, valued by module accessing code, as defined by the `loadStrategy`. These should be processed into a form suitable for the toggle point, assumed some kind of `Map` that can be interrogated based on some feature toggle state.
+
+If not supplied, the default handler (`@asos/web-toggle-point-webpack/toggleHandlerFactories/pathSegment`) is used, compatible with the default `variantGlob`.
+
+This converts path segments to features and variant names, storing in a tree data structure held in a `Map`, with each path segment as a node in the tree, and the variant modules as the leaf nodes.
+
+####  _`loadStrategy`_
+
+This should be an object containing two properties:
+
+- `importCodeGenerator`
+
+This should be a function that generates javascript suitable to load modules, outputting a `jointPoint` and a `variantPathMap` (TBC) variables.  This is used at compile time.
+
+The generator receives two arguments, `joinPointPath` (representing the full path of the join point) and `variantPathMap` (a `Map` keyed by relative paths to variant code, in relation to the control/base module, valued by the absolute path of the variant code).
+
+TBC
+
+- `adapterModuleSpecifier`
+
+A [module specifier](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#:~:text=The%20module%20specifier%20provides%20a%20string%20that%20the%20JavaScript%20environment%20can%20resolve%20to%20a%20path%20to%20the%20module%20file) that should optionally hold `pack` and `unpack` named exports.
+
+These are made available to the `toggleHandlerFactory` so that it can mutate the require/import expressions generated by the `importCodeGenerator` before storing in the "featuresMap" it generates.  The `unpack` method is made available to the "toggle point" to access a module for immediate use. This scheme allows for deferred / lazy execution, or otherwise.
+
+The module specifier will usually be the file path of the `loadStrategy` itself, since the code generated is coupled to the means of packing and unpacking.  The `pack` and `unpack` methods are compiled into the build, so used at runtime.
 
 #### Other configuration
 
@@ -165,7 +191,7 @@ Given the following file structure in the repo:
 ...and the following configuration to the plugin:
 
 ```javascript
-const plugin = new TogglePointInjection({
+const plugin = new TogglePointInjectionPlugin({
   pointCuts: [{
     name: "my point cut",
     togglePointModuleSpecifier: "/src/modules/withTogglePoint",
@@ -180,14 +206,14 @@ That proxy module will, in turn, import a module with id `toggle:/point-cuts:/my
 
 The `toggle:/point-cuts:/my point cut` then imports the configured toggle point (and toggle handler, if configured), then calls the handler with the toggle point, join point module, and variants. The handler is expected to unpick the webpack-specific context module, and mutate it into something consumable by the toggle point.
 
-This toggle point is then expected to return the outcome, having chosen the appropriate module at runtime.
+This toggle point is then expected to return the outcome, having chosen the appropriate module at runtime, "unpacked" via the provided unpack method.
 
 ```javascript
-const togglePoint = (joinPoint, featuresMap) => {
+const togglePoint = ({ joinPoint, featuresMap, unpack }) => {
   if (feature2Variant1ShouldApply()) { // some bespoke logic held in the toggle point for this type of toggle
-    return featuresMap.get("feature2").get("variant1").default;
+    return unpack(featuresMap.get("feature2").get("variant1"));
   };
-  return joinPoint.default;
+  return unpack(joinPoint);
 }
 ```
 
