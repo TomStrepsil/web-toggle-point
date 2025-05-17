@@ -1,12 +1,12 @@
-import schema from "./schema.json";
 import processPointCuts from "./processPointCuts/index.js";
+import Logger from "./logger.js";
+import { PLUGIN_NAME } from "./constants.js";
 import resolveJoinPoints from "./resolveJoinPoints/index.js";
 import setupSchemeModules from "./setupSchemeModules/index.js";
-import fillDefaultOptionalValues from "./fillDefaultOptionalValues.js";
 import TogglePointInjectionPlugin from "./index.js";
-import { PLUGIN_NAME } from "./constants.js";
+import fillDefaultOptionalValues from "./fillDefaultOptionalValues.js";
 import { validate } from "schema-utils";
-import Logger from "./logger.js";
+import schema from "./schema.json";
 
 jest.mock("./logger.js", () =>
   jest.fn(function () {
