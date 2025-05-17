@@ -48,7 +48,7 @@ const withTogglePointFactory = ({
   getActiveFeatures,
   logError,
   variantKey = "bucket",
-  plugins = []
+  plugins
 }) => {
   const codeSelectionPlugins = getCodeSelectionPlugins(plugins);
 

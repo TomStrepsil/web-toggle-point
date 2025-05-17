@@ -25,7 +25,7 @@ import getCodeSelectionPlugins from "../getCodeSelectionPlugins";
 const withToggledHookFactory = ({
   getActiveFeatures,
   variantKey = "bucket",
-  plugins = []
+  plugins
 }) => {
   const codeSelectionPlugins = getCodeSelectionPlugins(plugins);
   const useCodeSelectionPlugins = pluginsHookFactory(codeSelectionPlugins);
