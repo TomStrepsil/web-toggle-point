@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.3] - ??
 
+### Added
+
+- added `:ui` scripts, for those that want to watch their automation
+
 ### Changed
 
 - updated Playwright to 1.52.0
