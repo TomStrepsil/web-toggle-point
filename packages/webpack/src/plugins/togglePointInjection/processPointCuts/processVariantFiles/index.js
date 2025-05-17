@@ -1,6 +1,6 @@
 import { posix } from "path";
 import isJoinPointInvalid from "./isJoinPointInvalid.js";
-import crossConnectJoinPoints from "./linkJoinPoints.js";
+import linkJoinPoints from "./linkJoinPoints.js";
 const { dirname, relative } = posix;
 
 const normalizeToRelativePath = (path, joinDirectory) =>
@@ -46,7 +46,7 @@ const processVariantFiles = async ({
     joinPointFile.variantPathMap.set(key, path);
   }
 
-  crossConnectJoinPoints(joinPointFiles);
+  linkJoinPoints(joinPointFiles);
 };
 
 export default processVariantFiles;
