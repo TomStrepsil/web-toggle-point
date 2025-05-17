@@ -211,7 +211,7 @@ This toggle point is then expected to return the outcome, having chosen the appr
 ```javascript
 const togglePoint = ({ joinPoint, featuresMap, unpack }) => {
   if (feature2Variant1ShouldApply()) { // some bespoke logic held in the toggle point for this type of toggle
-    return unpack(featuresMap.get("feature2").get("variant1"));
+    return unpack(featuresMap.get("feature-identifier").get("variant-identifier"));
   };
   return unpack(joinPoint);
 }

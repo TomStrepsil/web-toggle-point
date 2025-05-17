@@ -21,7 +21,7 @@ describe("deferredDynamicImportLoadStrategyFactory", () => {
     expect(result).toEqual(
       expect.objectContaining({
         adapterModuleSpecifier: expect.stringMatching(
-          /packages(\\+|\/)webpack\1src\1moduleLoadStrategyFactories\1deferredDynamicImportLoadStrategyFactory\.js$/
+          /packages([/\\])webpack\1src\1moduleLoadStrategyFactories\1deferredDynamicImportLoadStrategyFactory\.js$/
         ),
         importCodeGenerator: expect.any(Function)
       })

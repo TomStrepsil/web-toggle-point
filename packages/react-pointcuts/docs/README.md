@@ -16,11 +16,17 @@ The product of both these factories receive the outcome of the webpack plugin, u
 
 Both accept plugins, currently supporting a hook called during code activation (mounting of the  component, or calling the hook).
 
-It also contains a package export (accessed via `@asos/web-toggle-point-react-pointcuts/lazyComponentLoadStrategyFactory`):
+It also contains a package export:
 
-- `lazyComponentLoadStrategyFactory`
+- `@asos/web-toggle-point-react-pointcuts/lazyComponentLoadStrategyFactory`
 
-This is a load strategy for use with the webpack [`TogglePointInjectionPlugin`](../../webpack/docs/README.md) for when lazy-loading components is desired.
+This is a factory for a load strategy for use with the webpack [`TogglePointInjectionPlugin`](../../webpack/docs/README.md) for when lazy-loading / code splitting is desired.
+
+> [!NOTE]
+>
+> In SSR scenarios, a streaming render should be used (i.e. [`renderToPipeableStream`](https://react.dev/reference/react-dom/server/renderToPipeableStream) or [`renderToReadableStream`](https://react.dev/reference/react-dom/server/renderToReadableStream)) when using this load strategy, as is inherent with [`React.lazy`](https://react.dev/reference/react/lazy), otherwise the following error will be produced:
+>
+> > Error: A component suspended while responding to synchronous input. This will cause the UI to be replaced with a loading indicator. To fix, updates that suspend should be wrapped with `startTransition`.
 
 ## Usage
 
@@ -42,7 +48,9 @@ See: [JSDoc output](https://asos.github.io/web-toggle-point/module-web-toggle-po
 > ```
 > [!IMPORTANT]
 >
-> Since React 17 does not support suspense for code splitting during server-side rendering, where a `lazyComponentLoadStrategyFactory` strategy is used, this will preclude the use of Server-Side Rendering.
+> Since React 17 does not support suspense for code splitting during server-side rendering, where a `lazyComponentLoadStrategyFactory` strategy is used, this will preclude the use of Server-Side Rendering.  You will receive the following:
+>
+> > ReactDOMServer does not yet support Suspense.
 
 > [!WARNING]
 > ### Use with NextJS
