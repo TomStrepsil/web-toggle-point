@@ -5,11 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - ??
+
+### Added
+
+- added a "content management" example, demonstrating use of `withToggledHookFactory` from the `react-pointcuts` package
+
+### Changed
+
+- updated to new webpack plugin
+  - moved "experiments" example to use the `lazyComponentLoadStrategyFactory` from `react-pointcuts`
+  - new "content management" example utilising the default `deferredRequireLoadStrategyFactory` of `webpack` package
+- colocate documentation for "experiments" example to sit with its own `README.mdx`
+
+### Fixed
+
+- consistent "Explanation" and "Activation" sections in example `README.mdx` files
+
 ## [0.2.2] - 2024-12-24
 
 ### Fixed
 
 - links to folders, not `README.mdx`, in the experiments examples
+- create `FeaturesProvider` via factory in outermost scope, rather than on each render of an example
 
 ## [0.2.1] - 2024-12-18
 
