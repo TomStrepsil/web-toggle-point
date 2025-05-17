@@ -1,6 +1,6 @@
 # @asos/web-toggle-point-webpack
 
-This package provides a [webpack plugin](https://webpack.js.org/concepts/plugins/) that's designed to identify [join points](https://en.wikipedia.org/wiki/Join_point) during a build process based on a configurable filesystem convention, then re-direct requests to those modules to a proxy.  The proxy makes a decision at runtime, based on some context, to either enact the original module, or a variant.
+This package provides a [webpack plugin](https://webpack.js.org/concepts/plugins/) that's designed to identify [join points](https://en.wikipedia.org/wiki/Join_point) during a build process based on a configurable filesystem convention, then re-direct requests to those modules to a proxy.  The proxy makes a decision at runtime, based on something contextual or otherwise variable, to either enact the original module, or a variant.
 
 The join points are configured as a [pointcut](https://en.wikipedia.org/wiki/Pointcut) which defines the convention to identify the join points within the input file system, and the toggle handler that should enact decisions at runtime, choosing the appropriate module to run.
 
@@ -143,11 +143,11 @@ This should be an object containing two properties:
 
 - `importCodeGenerator`
 
-This should be a function that generates javascript suitable to load modules, outputting a `jointPoint` and a `variantPathMap` (TBC) variables.  This is used at compile time.
+This should be a function, used at compiled time, that generates javascript suitable to load modules, outputting a `jointPoint` and a `variantPathMap`.  The code it returns is used when creating join point proxy modules.
 
 The generator receives two arguments, `joinPointPath` (representing the full path of the join point) and `variantPathMap` (a `Map` keyed by relative paths to variant code, in relation to the control/base module, valued by the absolute path of the variant code).
 
-TBC
+It generate code that leaves a `joinPoint` and `variantPathMap` variable in scope; the proxy module code will pass these to a toggle point.
 
 - `adapterModuleSpecifier`
 
@@ -202,11 +202,17 @@ const plugin = new TogglePointInjectionPlugin({
 
 ...the plugin inject a proxy module with the id `toggle:/join-points:/src/modules/myModule.js` into the compilation, to which all requests for `/src/modules/myModule.js` will be redirected.[^4]
 
-That proxy module will, in turn, import a module with id `toggle:/point-cuts:/my point cut`, and pass it the original module for `/src/modules/myModule.js` as a `pointCut` argument, plus all the possible variation modules (`./feature1/variant1/myModule.js`, `./feature2/variant1/myModule.js`, `./feature2/variant2/myModule.js`) in a [WebPack context module](https://webpack.js.org/guides/dependency-management/#context-module-api).
+That proxy module will, in turn, import a module with id `toggle:/point-cuts:/my point cut`, and pass it the original module for `/src/modules/myModule.js` as a `joinPoint` argument, plus all the possible variation modules (`./feature1/variant1/myModule.js`, `./feature2/variant1/myModule.js`, `./feature2/variant2/myModule.js`) in `Map`, with the modules "packed" in accordance with the load strategy.
 
-The `toggle:/point-cuts:/my point cut` then imports the configured toggle point (and toggle handler, if configured), then calls the handler with the toggle point, join point module, and variants. The handler is expected to unpick the webpack-specific context module, and mutate it into something consumable by the toggle point.
+The `toggle:/point-cuts:/my point cut` imports the configured toggle point, and toggle handler factory (either a configured one, or the default).
 
-This toggle point is then expected to return the outcome, having chosen the appropriate module at runtime, "unpacked" via the provided unpack method.
+It constructs a toggle handler, having passed it the toggle point and the `pack` and `unpack` methods of the load strategy (or [https://en.wikipedia.org/wiki/Identity_function](identity functions), if not configured).
+
+The handler is expected to construct a `featuresMap` data structure, based on the paths of the variation modules received.  The filesystem should define the feature toggle state which each module is relevant for, and this map should provide the means to look those modules up based on that state.  The modules should be placed in the structure in a "packed" form, as decreed by the `pack` method of the load strategy.
+
+The handler should then call the toggle point, with this `featuresMap` data structure, along with the `unpack` method, to allow the toggle point to prepare a module for immediate use, should it be chosen at run-time.
+
+This toggle point is then expected to return the chosen module.
 
 ```javascript
 const togglePoint = ({ joinPoint, featuresMap, unpack }) => {
@@ -226,39 +232,51 @@ sequenceDiagram
   participant issuer as Issuer Module
   participant joinPoint as toggle:/join-point:/src/modulePath
   participant pointCut as toggle:/point-cut:/experiments
-  participant handler as Toggle Handler
+  participant handlerFactory as Toggle Handler Factory
   participant togglePoint as Toggle Point
+  participant loadStrategy as Load Strategy
   participant default as /src/modulePath
   participant variant1 as /src/variant1/modulePath
   participant variant2 as /src/variant2/modulePath
 
   issuer ->> joinPoint: import
-  joinPoint ->> default: import
+  joinPoint ->> default: import() / require() 
   default -->> joinPoint: joinPoint
   joinPoint ->> pointCut: import
-  pointCut ->> handler: import
-  pointCut ->> togglePoint: import
+  pointCut ->> loadStrategy: import { pack, unpack }
+  loadStrategy -->> pointCut: { pack, unpack }
   par
-    joinPoint ->> variant1: require.context
+    joinPoint ->> variant1: import() / require() 
     variant1 -->> joinPoint: variant1
   and
-    joinPoint ->> variant2: require.context
+    joinPoint ->> variant2: import() / require() 
     variant2 -->> joinPoint: variant2
   end
   issuer ->> joinPoint: default(args)
-  joinPoint ->> pointCut: default({ joinPoint, variants: <require.context>[variant1, variant2] })
-  pointCut ->> handler: default({ togglePoint, joinPoint, variants })
-  handler ->> handler: construct Map from variants
-  handler ->> togglePoint: default(joinPoint, featuresMap)
+  joinPoint -> joinPoint: variantPathMap = Map([<br>["./variant1/modulePath", variant1],<br>["./variant1/modulePath", variant2]<br>])
+  joinPoint ->> pointCut: default({ joinPoint, variantPathMap })
+  pointCut ->> handlerFactory: create({ togglePoint, pack, unpack })
+  create participant handler as Toggle Handler
+  handlerFactory ->> handler: create
+  handler -->> handlerFactory: handler
+  handlerFactory -->> pointCut: handler
+  pointCut -->> joinPoint: handler
+  joinPoint ->> handler: default({ joinPoint, variantPathMap })
+  handler ->> handler: construct features Map from variantPathMap (packed)
+  handler ->> handler: packedJoinPoint: pack(joinPoint)
+  handler ->> togglePoint: default({ joinPoint: packedJoinPoint, featuresMap, unpack })
   alt base/default is relevant, via toggle point logic
+    togglePoint ->> togglePoint: unpack(default)
     togglePoint ->> default: default(args)
     default -->> togglePoint: result
     togglePoint -->> issuer: result
   else variant1 is relevant, via toggle point logic
+    togglePoint ->> togglePoint: unpack(variant1)
     togglePoint ->> variant1: default(args)
     variant1 -->> togglePoint: result
     togglePoint -->> issuer: result
   else variant2 is relevant, via toggle point logic
+    togglePoint ->> togglePoint: unpack(variant2)
     togglePoint ->> variant2: default(args)
     variant2 -->> togglePoint: result
     togglePoint -->> issuer: result
