@@ -24,6 +24,10 @@ This log covers the [monorepo](https://en.wikipedia.org/wiki/Monorepo).
 
 - `test:unit:coverage` script
 
+### Changed
+
+- use [`import.meta.resolve`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta/resolve) where possible
+
 ## [0.10.4] - 2025-03-06
 
 ### Fixed
