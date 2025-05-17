@@ -120,10 +120,10 @@ e.g. a variant at `./__variants__/feature-name/variant-name/module.js` will reso
 > [!TIP]
 > An "escape hatch" exists to prevent untoward convention-based variation, via creation of `__toggleConfig.json` files, sitting in the same folder as potential join points / base modules.  This can contain a `joinPoints` array, listing the filenames in the directory that should be considered eligible.  Any empty array disables all toggling for that folder. e.g.
 > ```json
->{
->   "joinPoints": ["validJoinPoint.js", "anotherValidJoinPoint.js"] 
->}
->```
+> {
+>    "joinPoints": ["validJoinPoint.js", "anotherValidJoinPoint.js"] 
+> }
+> ```
 
 #### _`toggleHandlerFactoryModuleSpecifier`_
 

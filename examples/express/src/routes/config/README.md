@@ -20,7 +20,7 @@ The implementation uses the `lazyComponentLoadStrategyFactory` from the `react-p
 6. press the buttons, to demonstrate overriding the initial content serialized on the server
    - N.B. The colourisation is only a result of the stored config, so using the buttons will just change the size
    - watch the network tab in developer tools to observe the lazy loading in effect
-   - try blocking one of the subsequent chunks, you should see the error boundary falling back to the default experience, with:
+   - try blocking one of the subsequent chunks, you should see the error boundary falling back to the default experience, with a console log:
      ```
      ChunkLoadError: Variant errored, rendering fallback: Loading chunk ### failed.
      ```
