@@ -5,7 +5,24 @@ import deferredDynamicImportLoadStrategyFactory from "@asos/web-toggle-point-web
 const adapterModuleSpecifier = import.meta.filename;
 
 export const pack = (expression) => lazy(expression);
-export default (options) => ({
-  ...deferredDynamicImportLoadStrategyFactory(options),
-  adapterModuleSpecifier
-});
+
+/**
+ * A component load strategy factory to generate a load strategy using React's lazy function
+ * @memberof module:web-toggle-point-react-pointcuts
+ * @param {object} [options] options
+ * @param {object} [options.importCodeGeneratorFactoryOptions] options for the code generator factory // TODO: interface referenced in webpack package?
+ * @param {string} [options.importCodeGeneratorFactoryOptions.webpackMagicComment] a magic comment prefixing the {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import|dynamic import} statement. see {@link https://webpack.js.org/api/module-methods/#magic-comments|Webpack Magic Comments}
+ * @returns {module:web-toggle-point-webpack.loadStrategy} a load strategy
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy|React.lazy}
+ */
+const lazyComponentLoadStrategyFactory = (options) =>
+  /**
+   * lazyComponentLoadStrategy
+   * @implements module:web-toggle-point-webpack.loadStrategy
+   */
+  ({
+    ...deferredDynamicImportLoadStrategyFactory(options),
+    adapterModuleSpecifier
+  });
+
+export default lazyComponentLoadStrategyFactory;

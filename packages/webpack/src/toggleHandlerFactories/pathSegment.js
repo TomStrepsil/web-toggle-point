@@ -14,8 +14,8 @@ const buildTree = (map = new Map(), parts, value) => {
  * @inner
  * @param {object} options toggle handler factory options
  * @param {function} options.togglePoint a method that chooses the appropriate module at runtime, passed a join points and a Map of feature keys to variants
- * @param {function} options.pack a method to pack a module, as returned by the join point, in preparation for use by the toggle point. must be a named export of the loading strategy, but can be an identity function
- * @param {function} options.unpack a method to unpack a module when needed by the toggle point. must be a named export of the loading strategy, but can be an identity function
+ * @param {function} options.pack a method to pack a module (as returned by the join point) in preparation for use by the toggle point. This should be defined by the {@link module:web-toggle-point-webpack.loadStrategy|load strategy}.
+ * @param {function} options.unpack a method to unpack a module when needed by the toggle point. This should be defined by the {@link module:web-toggle-point-webpack.loadStrategy|load strategy}.
  * @returns {module:web-toggle-point-webpack.pathSegmentToggleHandler} a toggle handler that takes a join point and a Map of feature keys to variants, and returns a module
  * @example
  * const pathSegmentToggleHandler = pathSegmentToggleHandlerFactory({
@@ -30,7 +30,6 @@ const buildTree = (map = new Map(), parts, value) => {
 const pathSegmentToggleHandlerFactory = ({ togglePoint, pack, unpack }) => {
   /**
    * Path Segment Toggle Handler
-   * @function pathSegmentToggleHandler
    * @static
    * @memberof module:web-toggle-point-webpack
    * @param {object} params handler parameters
