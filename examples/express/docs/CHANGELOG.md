@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - update to support new object argument for toggle points introduced by updated webpack plugin
 - `MiniCssExtractPlugin` moved to "common" setup block when configuring point cut
 
+### Fixed
+
+- removed "Vary" header from "animals" example, the page is meant to be un-cacheable, and the value was wrong in any case
+
 ## [0.2.3] - 2024-12-24
 
 ### Changed

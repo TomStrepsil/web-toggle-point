@@ -27,6 +27,7 @@ This log covers the [monorepo](https://en.wikipedia.org/wiki/Monorepo).
 ### Changed
 
 - use [`import.meta.resolve`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta/resolve) where possible
+  - minimum Node version set to 20.8
 
 ## [0.10.4] - 2025-03-06
 
