@@ -20,11 +20,13 @@ ${createVariantPathMap(variantsKeys.map((key, index) => `  ["${key}", variant_${
  * @memberOf module:web-toggle-point-webpack
  * @returns {module:web-toggle-point-webpack.loadStrategy}
  */
-const staticLoadStrategyFactory = () => {
-  return {
+const staticLoadStrategyFactory = () =>
+  /**
+   * @implements {module:web-toggle-point-webpack.loadStrategy}
+   */
+  ({
     adapterModuleSpecifier,
     importCodeGenerator
-  };
-};
+  });
 
 export default staticLoadStrategyFactory;
