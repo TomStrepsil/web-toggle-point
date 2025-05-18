@@ -37,6 +37,7 @@
     "docs": "rimraf ./docs/**/*.html && jsdoc -c ../jsdoc.conf.js",
     "lint": "eslint build src docs --flag unstable_config_lookup_from_file",
     "lint:fix": "npm run lint -- --fix",
+    "pretest": "npm run build-dependencies",
     "test": "jest"
   },
   "dependencies": {
