@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - updated the interface of `withTogglePoint` to de-structure an object, rather than have multiple parameters, aligning with change to the Webpack Plugin, made to support toggle points that only care about a `featuresMap`, or perhaps aligned to a load strategy that does not need `pack` and/or `unpack`. This also aligns with ASOS Codebase Convention PC14
+- clarified the features store structure that the toggle points are compatible with
 
 ### Fixed
 

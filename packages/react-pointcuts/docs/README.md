@@ -1,6 +1,8 @@
 # @asos/web-toggle-point-react-pointcuts
 
-This package provides react application pointcut code, acting as a target toggle point injected by the [`TogglePointInjectionPlugin`](../../webpack/docs/README.md)
+This package provides react application pointcut code, acting as a target toggle point injected by the [`TogglePointInjectionPlugin`](../../webpack/docs/README.md).
+
+It is designed for a features store that has "features" and "variants" of features, held in a two-level `Map`.
 
 It contains the following exports from the base package (`@asos/web-toggle-point-react-pointcuts`):
 
