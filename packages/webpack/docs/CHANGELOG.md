@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - changed description of package to better indicate it contains more than just a plugin
 - renamed `TogglePointInjection` to `TogglePointInjectionPlugin` to follow Webpack recommended naming convention
-- renamed `togglePointModule` to `togglePointModuleSpecifier` to better describe [the type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#:~:text=The%20module%20specifier%20provides%20a%20string%20that%20the%20JavaScript%20environment%20can%20resolve%20to%20a%20path%20to%20the%20module%20file)
+- renamed `togglePointModule` to `togglePointModuleSpecifier` to better describe [the type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#importing_features_into_your_script)
 - updated webpack version to 5.99.7
 - consolidated setting of default optional values
 - changed `variants` array on join point data structure to a `Map` of relative to absolute path as `variantPathMap`
