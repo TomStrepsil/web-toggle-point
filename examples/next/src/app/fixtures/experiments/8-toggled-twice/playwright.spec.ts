@@ -25,8 +25,8 @@ test.describe("varying a component and varying again with a different toggle poi
         page
       }) => {
         await page.goto(fixtureURL);
+        await page.waitForTimeout(50);
         await page.keyboard.down("a");
-        await page.keyboard.down("a"); // needs double press to work in headless, for some reason...
         await expect(locateWithinExample(page, "variant 1")).toBeVisible();
         await expect(
           page.locator("p", { hasText: "pressed: a" })
@@ -39,8 +39,8 @@ test.describe("varying a component and varying again with a different toggle poi
         page
       }) => {
         await page.goto(fixtureURL);
+        await page.waitForTimeout(50);
         await page.keyboard.down("n");
-        await page.keyboard.down("n"); // needs double press to work in headless, for some reason...
         await expect(locateWithinExample(page, "variant 2")).toBeVisible();
         await expect(
           page.locator("p", { hasText: "pressed: n" })
