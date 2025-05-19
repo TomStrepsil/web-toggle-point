@@ -1,0 +1,16 @@
+# Varying a Module after being Opted Out of an Experiment
+
+## Explanation
+
+This example demonstrates a feature varying a component after another feature has
+not varied it.  This demonstrates the ability for multiple potential point cuts to
+be considered, with the first one matching being activated.
+
+## Activation
+
+If an `experiments` header is set, with a `"test-feature": { "bucket": "test-variant" }`
+decision, the "Control 1" (`component.tsx`) component is replaced by a "Variant 1".
+
+If the `experiments` header is updated to set the "bucket" for "test-feature" to be 
+"control", and a new a `"test-feature-2": { "bucket": "test-variant" }` decision, 
+added the "Control 1" (`component.tsx`) component is replaced by a "Variant 2".
