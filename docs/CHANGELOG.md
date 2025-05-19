@@ -26,8 +26,9 @@ This log covers the [monorepo](https://en.wikipedia.org/wiki/Monorepo).
 
 ### Changed
 
-- use [`import.meta.resolve`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta/resolve) where possible
-  - minimum Node version set to 20.8
+- set minimum node version to 20.8 due to use of [`import.meta.resolve`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta/resolve) where possible in packages / examples
+- updated to `0.11.0` of [`eslint-plugin-workspaces`](https://github.com/joshuajaco/eslint-plugin-workspaces) after [addition of ESLint9 support](https://github.com/joshuajaco/eslint-plugin-workspaces/commit/af855c3a3d8069366d4446747e91828ddf7560c6)
+  - update `eslint.config.mjs` to utilise flat config
 
 ## [0.10.4] - 2025-03-06
 

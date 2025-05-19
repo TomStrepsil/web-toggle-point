@@ -2,17 +2,13 @@ import asosConfig from "./peripheral/eslint-config-asosconfig/index.js";
 import globals from "globals";
 import jsdoc from "eslint-plugin-jsdoc";
 import markdown from "@eslint/markdown";
-import { FlatCompat } from "@eslint/eslintrc";
+import workspaces from "eslint-plugin-workspaces";
 
 const scripts = ["*.{js,mjs}", "**/*.{js,mjs}"];
 const markDowns = ["*.md", "**/*.md"];
 
-const compat = new FlatCompat({
-  baseDirectory: import.meta.resolve(".")
-});
-
 export default [
-  ...compat.extends("plugin:workspaces/recommended"),
+  workspaces.configs["flat/recommended"],
   ...asosConfig.map((config) => ({
     files: scripts,
     ignores: ["**/docs/**", "**/danger/**"],
