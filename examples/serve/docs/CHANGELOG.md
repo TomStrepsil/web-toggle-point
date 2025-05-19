@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - other default to `deferredRequire` (synchronous, but delayed require of module)
 - move to use `import.meta.resolve` replacing the hand-rolled `getToggleHandlerPath.js`
 - move `toggleHandlers` to `toggleHandlerFactories`, to align with updated `webpack` package
+- update output format to `es2022` and `module`, to validate loading strategies against this
 
 ## [0.2.3] - 2025-02-27
 

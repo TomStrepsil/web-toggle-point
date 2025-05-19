@@ -12,9 +12,14 @@ export default {
   mode: "production",
   devtool: "source-map",
   output: {
+    module: true,
     filename: "main.js",
     path: resolve(dirname(fileURLToPath(import.meta.url)), "dist")
   },
+  experiments: {
+    outputModule: true
+  },
+  target: "es2022",
   externals: [externals()],
   plugins: [
     new TogglePointInjectionPlugin({

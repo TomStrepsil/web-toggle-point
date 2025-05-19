@@ -4,6 +4,8 @@
 
 This example shows the use of [`webpack`](../../packages/webpack/docs/README.md) and [`features`](../../packages/features/docs/README.md) packages, as part of a simple [serve](https://github.com/vercel/serve) fully client-rendered application.
 
+It uses a [`module` output](https://webpack.js.org/configuration/output/#outputmodule) with [es2022](https://262.ecma-international.org/13.0/) [target](https://webpack.js.org/configuration/target/).
+
 It uses a `globalFeaturesStoreFactory` from the `features` package, to hold a invariant global toggle state.
 
 It demonstrates a setup that utilises the `toggleHandler`, `variantGlob`, and `controlResolver` options of the Webpack plugin, with some basic convention-based filesystem approaches to toggling:

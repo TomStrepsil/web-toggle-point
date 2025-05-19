@@ -3,7 +3,7 @@ import dynamicLoadCodeGenerator from "./internal/dynamicLoadCodeGenerator";
 export const unpack = (expression) => expression();
 
 /**
- * A load strategy factory to generate a load strategy using a deferred (only called when a module is accessed) invocation of {@link https://webpack.js.org/api/module-methods/#require|Webpack's require module method}, for use with {@link https://webpack.js.org/configuration/output/#outputchunkformat|CommonJS chunk format}.
+ * A load strategy factory to generate a load strategy using a deferred (only called when a module is accessed) invocation of {@link https://webpack.js.org/api/module-methods/#require|Webpack's require module method}.
  * @memberOf module:web-toggle-point-webpack
  * @returns {module:web-toggle-point-webpack.loadStrategy}
  */
