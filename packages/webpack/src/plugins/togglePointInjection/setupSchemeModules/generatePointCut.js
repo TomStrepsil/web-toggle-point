@@ -1,3 +1,5 @@
+import { posix, sep } from "path";
+
 const generatePointCut = ({ pointCuts, joinPointPath }) => {
   const pointCutName = joinPointPath.slice(1);
   const {
@@ -7,7 +9,7 @@ const generatePointCut = ({ pointCuts, joinPointPath }) => {
   } = pointCuts.find(({ name }) => name === pointCutName);
   return `import togglePoint from "${togglePointModuleSpecifier}";
 import handlerFactory from "${toggleHandlerFactoryModuleSpecifier}";
-import * as namespace from "${adapterModuleSpecifier}";
+import * as namespace from "${adapterModuleSpecifier.replaceAll(sep, posix.sep)}";
 const identity = (module) => module;
 const { pack:_pack = identity, unpack:_unpack = identity } = namespace;
 const handler = handlerFactory({ togglePoint, pack: _pack, unpack: _unpack });

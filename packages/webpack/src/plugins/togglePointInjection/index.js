@@ -1,6 +1,6 @@
 import processPointCuts from "./processPointCuts/index.js";
 import Logger from "./logger.js";
-import { win32, posix } from "path";
+import { sep, posix } from "path";
 import { PLUGIN_NAME } from "./constants.js";
 import resolveJoinPoints from "./resolveJoinPoints/index.js";
 import setupSchemeModules from "./setupSchemeModules/index.js";
@@ -58,7 +58,7 @@ class TogglePointInjection {
   apply(compiler) {
     let NormalModule, joinPointFiles, warnings, appRoot;
     compiler.hooks.beforeCompile.tapPromise(PLUGIN_NAME, async () => {
-      appRoot = compiler.context.replaceAll(win32.sep, posix.sep);
+      appRoot = compiler.context.replaceAll(sep, posix.sep);
       ({ joinPointFiles, warnings } = await processPointCuts({
         appRoot,
         fileSystem: compiler.inputFileSystem,

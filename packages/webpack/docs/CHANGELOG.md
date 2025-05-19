@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - various internal variable renames for clarity
 - wrapped "toggle handlers" in a factory method, to support `togglePoint`, `pack` and `unpack` being passed during setup, simplifying the toggle handler interface
   - move `toggleHandler/pathSegmentToggleHandler` to `toggleHandlerFactories/pathSegment`
+- updated win32 path replacement, can effectively no-op on posix systems
 
 ### Fixed
 
