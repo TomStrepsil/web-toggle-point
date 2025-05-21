@@ -16,6 +16,12 @@ const configPointCutConfig = {
 const common = {
   mode: "production",
   devtool: "source-map",
+  experiments: {
+    outputModule: true
+  },
+  output: {
+    module: true
+  },
   module: {
     rules: [
       {
@@ -38,13 +44,14 @@ const config = [
   {
     entry: "./src/index.js",
     target: "node",
+    ...common,
     output: {
+      ...common.output,
       path: resolve(dirname(fileURLToPath(import.meta.url)), "bin"),
-      filename: "server.cjs",
+      filename: "server.mjs",
       clean: true
     },
     externals: [externals()],
-    ...common,
     plugins: [
       ...common.plugins,
       new TogglePointInjectionPlugin({
@@ -69,11 +76,12 @@ const config = [
   {
     entry: "./src/routes/config/client.js",
     target: "web",
-    output: {
-      path: resolve(dirname(fileURLToPath(import.meta.url)), "public"),
-      filename: "main.js"
-    },
     ...common,
+    output: {
+      ...common.output,
+      path: resolve(dirname(fileURLToPath(import.meta.url)), "public"),
+      filename: "main.mjs"
+    },
     plugins: [
       ...common.plugins,
       new TogglePointInjectionPlugin({ pointCuts: [configPointCutConfig] })

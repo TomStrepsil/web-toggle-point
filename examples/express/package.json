@@ -10,7 +10,7 @@
     "build-dependencies": "path-exists ../../packages/webpack/lib || npm run --prefix ../../packages/webpack build && path-exists ../../packages/ssr/lib || npm run --prefix ../../packages/ssr build && path-exists ../../packages/features/lib || npm run --prefix ../../packages/features build && path-exists ../../packages/react-pointcuts/lib || npm run --prefix ../../packages/react-pointcuts build",
     "prebuild": "npm run build-dependencies",
     "build": "webpack",
-    "start": "cross-env PORT=3002 node bin/server.cjs",
+    "start": "cross-env PORT=3002 node bin/server.mjs",
     "start:small-env": "cross-env PORT=3003 node --env-file=./src/routes/config/.env-small bin/server.cjs",
     "start:large-env": "cross-env PORT=3004 node --env-file=./src/routes/config/.env-large bin/server.cjs",
     "prelint": "npm run build-dependencies",
