@@ -14,7 +14,7 @@
     "pretest:serve": "npm run install-dependencies",
     "test:serve": "playwright test --config ../../examples/serve/playwright.config.ts",
     "test:serve:ui": "npm run test:serve -- --ui",
-    "pretest:express": "npm run install-dependencies && path-exists ../../examples/express/bin/server.cjs || npm run --prefix ../../examples/express build",
+    "pretest:express": "npm run install-dependencies && path-exists ../../examples/express/bin/server.mjs || npm run --prefix ../../examples/express build",
     "test:express": "playwright test --config ../../examples/express/playwright.config.ts",
     "test:express:ui": "npm run test:express -- --ui"
   },
