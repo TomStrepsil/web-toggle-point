@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - consistent "Explanation" and "Activation" sections in example `README.mdx` files
+- removed errant `toggle-point.d.ts` in `tsconfig.json`
 
 ## [0.2.2] - 2024-12-24
 
