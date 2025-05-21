@@ -67,4 +67,4 @@ See: [JSDoc output](https://asos.github.io/web-toggle-point/module-web-toggle-po
 >   }
 >}
 > ```
-> N.B. The compiled entrypoint for CJS doesn't re-export named exports properly, so you'll need to select the production or development build as appropriate, as shown.
+> N.B. The compiled entrypoint for CJS doesn't re-export named exports properly, so you'll need to select the production or development build as appropriate, as shown.  The above works for Next 15, for Next 14 the production bundle is `react-is.production.min.js`
