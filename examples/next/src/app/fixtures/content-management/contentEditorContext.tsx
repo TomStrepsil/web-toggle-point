@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import featuresStore from "./featuresStore";
 
 const FeaturesProvider = featuresStore.providerFactory();
@@ -14,7 +14,7 @@ export default ({ children, isContentEditor }: FeaturesProviderProps) => {
     <FeaturesProvider
       value={{ devMode: { status: isContentEditor ? "active" : "inactive" } }}
     >
-      <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+      {children}
     </FeaturesProvider>
   );
 };
