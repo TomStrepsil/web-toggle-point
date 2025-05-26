@@ -19,9 +19,9 @@ const useContentEditable = () => {
       e.preventDefault();
       startTransition(async () => {
         await saveMarkdown(
-          turndownServiceRef.current?.turndown(
-            document.body.innerHTML.replaceAll(/<script>(.*?)<\/script>/g, "")
-          )
+          turndownServiceRef.current
+            ?.turndown(document.body.innerHTML!)
+            .replaceAll(/<script>(.*?)<\/script>/g, "")!
         );
       });
     }

@@ -5,7 +5,9 @@ import { withTogglePointFactory } from "@asos/web-toggle-point-react-pointcuts";
 import { FEATURE_KEY, VARIANT_KEY } from "./constants";
 
 const getActiveFeatures = () => {
-  const [state, updateState] = useState(null);
+  const [state, updateState] = useState<{
+    [FEATURE_KEY]: { [VARIANT_KEY]: string; children: React.ReactNode };
+  } | null>(null);
   const onKeyDown = (event) => {
     event.preventDefault();
     updateState({
