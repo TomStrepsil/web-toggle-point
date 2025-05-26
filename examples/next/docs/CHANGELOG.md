@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - moved "experiments" example to use the `lazyComponentLoadStrategyFactory` from `react-pointcuts`
   - new "content management" example utilising the default `deferredRequireLoadStrategyFactory` of `webpack` package
 - colocate documentation for "experiments" example to sit with its own `README.mdx`
+- updated documentation to indicate incompatibility of Next 14 (and presumed below) with the default `deferredRequireLoadStrategyFactory`
 
 ### Fixed
 
