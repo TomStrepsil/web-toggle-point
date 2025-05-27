@@ -4,7 +4,7 @@ import type TurndownService from "turndown";
 
 const useContentEditable = () => {
   const [isPending, startTransition] = useTransition();
-  const turndownServiceRef = useRef<TurndownService>(undefined);
+  const turndownServiceRef = useRef<TurndownService>(null);
 
   useEffect(() => {
     if (isPending) {
