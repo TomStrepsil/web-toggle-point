@@ -4,8 +4,9 @@ export default [
   {
     name: "experiments",
     togglePointModuleSpecifier: "/src/app/fixtures/experiments/withTogglePoint",
-    variantGlob:
+    variantGlobs: [
       "./src/app/fixtures/experiments/**/__variants__/*/*/!(*.spec).tsx"
+    ]
   },
   toggledTwicePointCutConfig
 ];

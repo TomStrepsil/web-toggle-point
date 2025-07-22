@@ -5,7 +5,7 @@ import loadStrategyFactory from "@asos/web-toggle-point-webpack/moduleLoadStrate
 export default {
   name: "translation",
   togglePointModuleSpecifier: "/src/fixtures/translation/__togglePoint.js",
-  variantGlob: "./src/fixtures/translation/languages/*/*.json",
+  variantGlobs: ["./src/fixtures/translation/languages/*/*.json"],
   joinPointResolver,
   loadStrategy: loadStrategyFactory()
 };

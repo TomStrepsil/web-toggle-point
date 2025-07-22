@@ -1,10 +1,10 @@
 import processPointCuts from "./index.js";
-import processVariantFiles from "./processVariantFiles";
-import getVariantFiles from "./getVariantFiles";
+import processVariantFiles from "./processVariantFiles/index.js";
+import getVariantPaths from "./getVariantPaths.js";
 
 jest.mock("./processVariantFiles/index.js", () => jest.fn());
-jest.mock("./getVariantFiles.js", () =>
-  jest.fn(() => Symbol("test-variant-files"))
+jest.mock("./getVariantPaths.js", () =>
+  jest.fn(() => Symbol("test-variant-paths"))
 );
 
 describe("processPointCuts", () => {
@@ -29,9 +29,9 @@ describe("processPointCuts", () => {
   });
 
   it("should get variant files for each of the point cuts", () => {
-    for (const { variantGlob } of pointCutsValues.keys()) {
-      expect(getVariantFiles).toHaveBeenCalledWith({
-        variantGlob,
+    for (const { variantGlobs } of pointCutsValues.keys()) {
+      expect(getVariantPaths).toHaveBeenCalledWith({
+        variantGlobs,
         appRoot,
         fileSystem
       });
@@ -40,9 +40,9 @@ describe("processPointCuts", () => {
 
   it("should process the variant files, and keep a shared record of config files found between each point cut", () => {
     for (const [index, pointCut] of pointCutsValues.entries()) {
-      const variantFiles = getVariantFiles.mock.results[index].value;
+      const variantPaths = getVariantPaths.mock.results[index].value;
       expect(processVariantFiles).toHaveBeenCalledWith({
-        variantFiles,
+        variantPaths,
         joinPointFiles,
         pointCut,
         warnings,

@@ -3,7 +3,7 @@ import lazyComponentLoadStrategyFactory from "@asos/web-toggle-point-react-point
 export default {
   name: "toggled twice experiment",
   togglePointModuleSpecifier: import.meta.resolve("./withTogglePoint.tsx"),
-  variantGlob: "./src/app/fixtures/experiments/8-toggled-twice/**/*.?-?.tsx",
+  variantGlobs: ["./src/app/fixtures/experiments/8-toggled-twice/**/*.?-?.tsx"],
   joinPointResolver: (path) => path.replace(/.-.\.tsx$/, "tsx"),
   toggleHandlerFactoryModuleSpecifier: import.meta.resolve(
     "./toggleHandlerFactory.ts"

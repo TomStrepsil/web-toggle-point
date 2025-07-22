@@ -8,7 +8,7 @@ It uses a [`module` output](https://webpack.js.org/configuration/output/#outputm
 
 It uses a `globalFeaturesStoreFactory` from the `features` package, to hold a invariant global toggle state.
 
-It demonstrates a setup that utilises the `toggleHandler`, `variantGlob`, and `controlResolver` options of the Webpack plugin, with some basic convention-based filesystem approaches to toggling:
+It demonstrates a setup that utilises the `toggleHandler`, `variantGlobs`, and `controlResolver` options of the Webpack plugin, with some basic convention-based filesystem approaches to toggling:
 
 1. selecting a translations JSON file based on [`navigator.language`](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/language).
     - This uses language files stored at:
@@ -65,7 +65,7 @@ All fall back to the default if no variant matches.
       ```
 
 5. (in chrome) open `chrome://settings/?search=lang` and add one of `Portuguese (Brazil)` or `German` to your preferred languages, and move that to the no 1. position.
-6. re-load `localhost:3000`
+6. re-load `localhost:3001`
    - you should see the following (in Portuguese example):
 
       ```html
@@ -76,7 +76,7 @@ All fall back to the default if no variant matches.
       Some event-themed content
       ```
 
-7. now open `localhost:3000/es`
+7. now open `localhost:3001/es`
     - you should see the following:
 
       ```html
@@ -87,7 +87,7 @@ All fall back to the default if no variant matches.
       Some event-themed content
       ```
 
-8. now open `localhost:3000/it`
+8. now open `localhost:3001/it`
     - you should see the following:
 
       ```html
@@ -98,7 +98,7 @@ All fall back to the default if no variant matches.
       Some event-themed content
       ```
 
-9. now open `localhost:3000/us` or `localhost:3000/de` or `localhost:3000/fr`
+9. now open `localhost:3001/us` or `localhost:3001/de` or `localhost:3001/fr`
     - you should see the following:
 
       ```html
@@ -110,7 +110,7 @@ All fall back to the default if no variant matches.
       ```
 
 10. set a cookie for an audience to either of `cohort-1` or `cohort-2` using `document.cookie = "audience=cohort-1"`
-11. now open `localhost:3000/`
+11. now open `localhost:3001/`
     - you should see the following (in cohort-1 example):
 
       ```html
@@ -122,7 +122,7 @@ All fall back to the default if no variant matches.
       ```
 
 12. change the system date to either 5th July 2025, 31st October or 17th March.
-13. now open `localhost:3000/`
+13. now open `localhost:3001/`
     - you should see the following:
 
       ```html

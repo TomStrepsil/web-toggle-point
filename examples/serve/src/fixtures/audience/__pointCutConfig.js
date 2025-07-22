@@ -5,7 +5,7 @@ import loadStrategyFactory from "@asos/web-toggle-point-webpack/moduleLoadStrate
 export default {
   name: "audience",
   togglePointModuleSpecifier: "/src/fixtures/audience/__togglePoint.js",
-  variantGlob: "./src/fixtures/audience/**/cohort-[1-9]*([0-9])/*.js",
+  variantGlobs: ["./src/fixtures/audience/**/cohort-[1-9]*([0-9])/*.js"],
   toggleHandlerFactoryModuleSpecifier: import.meta.resolve(
     "../../toggleHandlerFactories/singlePathSegment.js"
   ),

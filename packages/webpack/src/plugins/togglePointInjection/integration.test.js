@@ -22,14 +22,14 @@ describe("togglePointInjection", () => {
     {
       name: "not react hooks",
       togglePointModuleSpecifier: togglePointModule1,
-      variantGlob: `${modulesFolder}**/${variantsFolder}/*/*/!(*use)*.js`,
+      variantGlobs: [`${modulesFolder}**/${variantsFolder}/*/*/!(*use)*.js`],
       moduleName: "testModule.js",
       loadStrategy
     },
     {
       name: "react hooks",
       togglePointModuleSpecifier: togglePointModule2,
-      variantGlob: `${modulesFolder}**/${variantsFolder}/*/*/use*.js`,
+      variantGlobs: [`${modulesFolder}**/${variantsFolder}/*/*/use*.js`],
       moduleName: "useTestModule.js",
       loadStrategy
     }
@@ -161,7 +161,9 @@ describe("togglePointInjection", () => {
     const [{ moduleName }] = testCases;
 
     beforeEach(async () => {
-      testCases[1].variantGlob = `${modulesFolder}**/${variantsFolder}/*/*/*.js`;
+      testCases[1].variantGlobs = [
+        `${modulesFolder}**/${variantsFolder}/*/*/*.js`
+      ];
       plugin = new TogglePointInjection({
         pointCuts: testCases.map(({ moduleName, ...rest }) => rest) // eslint-disable-line no-unused-vars
       });

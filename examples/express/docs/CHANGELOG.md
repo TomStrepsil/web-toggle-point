@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.0] - ??
+## [0.3.0] - 2025-05-17
 
 ### Changed
 
@@ -17,10 +17,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - update to support new object argument for toggle points introduced by updated webpack plugin
 - `MiniCssExtractPlugin` moved to "common" setup block when configuring point cut
 - updated to use [`output.module`](https://webpack.js.org/configuration/output/#outputmodule), to help demonstrate this compatibility
+  - updated [`webpack-node-externals`](https://www.npmjs.com/package/webpack-node-externals) to use `module` [`importType`](https://www.npmjs.com/package/webpack-node-externals#optionsimporttype-commonjs)
 
 ### Fixed
 
 - removed "Vary" header from "animals" example, the page is meant to be un-cacheable, and the value was wrong in any case
+
+## [0.2.5] - 2025-05-27
+
+### Changed
+
+- updated to use `variantGlobs` array, with updated webpack plugin [0.8.0][version 0.8.0](../../../packages/webpack/docs/CHANGELOG.md#080---2025-05-27)
+- used some differing syntax from [`micromatch`](https://github.com/micromatch/micromatch) to define `variantGlobs`, for coverage and where may be preferred
+
+## [0.2.4] - 2024-02-07
+
+### Fixed
+
+- corrected some links to packages from the examples readme
+- removed orphan `index.js` in the animals example, this has been supplanted by `router.js`
 
 ## [0.2.3] - 2024-12-24
 

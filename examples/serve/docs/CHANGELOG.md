@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.0] - ??
+## [0.3.0] - 2025-07-17
 
 ### Changed
 
@@ -19,6 +19,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - move to use `import.meta.resolve` replacing the hand-rolled `getToggleHandlerPath.js`
 - move `toggleHandlers` to `toggleHandlerFactories`, to align with updated `webpack` package
 - update output format to `es2022` and `module`, to validate loading strategies against this
+
+## [0.2.6] - 2025-07-14
+
+### Changed
+
+- updated to use `variantGlobs` array, with updated webpack plugin [0.8.0][version 0.8.0](../../../packages/webpack/docs/CHANGELOG.md#080---2025-05-27)
+
+## [0.2.5] - 2025-07-14
+
+### Fixed
+
+- set playwright image snapshot [max pixel difference ratio](https://playwright.dev/docs/api/class-pageassertions#page-assertions-to-have-screenshot-1-option-max-diff-pixel-ratio) to 0.05, to mitigate flaky false-negatives with Linux Chromium updates
+- removed false negatives when tests are run on event days
+
+## [0.2.4] - 2025-05-16
+
+### Fixed
+
+- fixed some incorrect ports in the `README.md`
 
 ## [0.2.3] - 2025-02-27
 

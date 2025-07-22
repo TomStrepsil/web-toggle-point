@@ -6,7 +6,7 @@ import contentManagementPointCutConfig from "./src/app/fixtures/content-manageme
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  pageExtensions: ["js", "md", "mdx", "ts", "tsx"]
+  pageExtensions: ["js", "md", "mdx", "ts", "tsx"],
 };
 
 const webpackNormalModule = async () =>
@@ -14,7 +14,7 @@ const webpackNormalModule = async () =>
 
 const togglePointInjection = new TogglePointInjectionPlugin({
   pointCuts: [...experimentPointCutConfig, ...contentManagementPointCutConfig],
-  webpackNormalModule
+  webpackNormalModule,
 });
 
 nextConfig.webpack = (config) => {
@@ -25,16 +25,16 @@ nextConfig.webpack = (config) => {
       ...(config.resolve ?? {}),
       alias: {
         ...(config.resolve.alias ?? {}),
-        "react-is": "next/dist/compiled/react-is/cjs/react-is.production.js"
-      }
-    }
+        "react-is": "next/dist/compiled/react-is/cjs/react-is.production.js",
+      },
+    },
   };
 };
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [remarkGfm]
-  }
+    remarkPlugins: [remarkGfm],
+  },
 });
 
 export default withMDX(nextConfig);

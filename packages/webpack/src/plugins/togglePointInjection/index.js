@@ -20,7 +20,7 @@ class TogglePointInjection {
    * @param {object[]} options.pointCuts toggle point point cut configuration, with target toggle point code as advice. The first matching point cut will be used
    * @param {string} options.pointCuts[].name name to describe the nature of the point cut, for clarity in logs and dev tools etc
    * @param {string} options.pointCuts[].togglePointModuleSpecifier a {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#importing_features_into_your_script|module specifier} pointing to the toggle point module
-   * @param {string} [options.pointCuts[].variantGlob='.\/**\/__variants__/*\/*\/!(*.test).{js,jsx,ts,tsx}'] {@link https://en.wikipedia.org/wiki/Glob_(programming)|Glob} to identified variant modules.  The plugin uses {@link https://github.com/mrmlnc/fast-glob|fast-glob} under the hood, so supports any glob that it does
+   * @param {string} [options.pointCuts[].variantGlobs=['.\/**\/__variants__/*\/*\/!(*.test).{js,jsx,ts,tsx}']] {@link https://en.wikipedia.org/wiki/Glob_(programming)|Glob} to identified variant modules.  The plugin uses {@link https://github.com/mrmlnc/fast-glob|fast-glob} under the hood, so supports any glob that it does
    * @param {function} [options.pointCuts[].joinPointResolver=(variantPath) => path.posix.resolve(variantPath, "../../../..", path.basename(variantPath))] A function that takes the path to a variant module and returns a join point / base module.  N.B. This is executed at build-time, so cannot use run-time context. It should use posix path segments, so on Windows be sure to use path.posix.resolve
    * @param {string} [options.pointCuts[].toggleHandlerFactoryModuleSpecifier='@asos/web-toggle-point-webpack/toggleHandlerFactories/pathSegment'] a {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#importing_features_into_your_script|module specifier} pointing to a toggle handler factory, that takes a toggle point, and returns a handler that unpicks a Map of relative paths to potential variants, passing that plus a joint point. If not provided, the plugin will use a default handler that processes folder names into a tree held in a Map. The join point and leaf nodes of the tree are modules in a form defined by the loading strategy
    * @param {module:web-toggle-point-webpack.loadStrategy} [options.pointCuts[].loadStrategy] a module load strategy. default is one created by "@asos/web-toggle-point-webpack/moduleLoadStrategyFactories/deferredRequireLoadStrategyFactory"
@@ -32,11 +32,11 @@ class TogglePointInjection {
    *   pointCuts: [
    *     {
    *       togglePointModuleSpecifier: "/withToggledHook",
-   *       variantGlob: "./**\/__variants__/*\/*\/use!(*.test).{ts,tsx}"
+   *       variantGlobs: ["./**\/__variants__/*\/*\/use!(*.test).{ts,tsx}"]
    *     },
    *     {
    *       togglePointModuleSpecifier: "/withTogglePoint",
-   *       variantGlob: "./**\/__variants__/*\/*\/!(use*|*.test).tsx",
+   *       variantGlobs: ["./**\/__variants__/*\/*\/!(use*|*.test).tsx"],
    *       loadStrategy: loadStrategyFactory({
    *          importCodeGeneratorFactoryOptions: {
    *             webpackMagicComment: "/* webpackPrefetch *\/"

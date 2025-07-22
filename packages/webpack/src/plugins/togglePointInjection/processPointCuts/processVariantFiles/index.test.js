@@ -3,7 +3,7 @@ import isJoinPointInvalid from "./isJoinPointInvalid.js";
 import linkJoinPoints from "./linkJoinPoints.js";
 import processVariantFiles from "./index.js";
 
-const { resolve, basename, join, sep } = posix;
+const { resolve, join, sep } = posix;
 
 jest.mock("./linkJoinPoints.js", () => jest.fn());
 jest.mock("./isJoinPointInvalid.js", () => jest.fn());
@@ -25,9 +25,9 @@ describe("processVariantFiles", () => {
     joinPointFiles = new Map();
   });
 
-  const act = async ({ variantFiles }) => {
+  const act = async ({ variantPaths }) => {
     await processVariantFiles({
-      variantFiles,
+      variantPaths,
       joinPointFiles,
       pointCut,
       warnings,
@@ -37,7 +37,7 @@ describe("processVariantFiles", () => {
 
   describe("when given no variant files", () => {
     beforeEach(async () => {
-      await act({ variantFiles: [], configFiles: new Map() });
+      await act({ variantPaths: new Set(), configFiles: new Map() });
     });
 
     it("should add no warnings, and not modify joinPointFiles", async () => {
@@ -46,24 +46,19 @@ describe("processVariantFiles", () => {
     });
   });
 
-  const variantFileName = variantFileGlob.replaceAll("*", "1");
+  const variantPath = variantFileGlob.replaceAll("*", "1");
 
   describe.each`
-    variantFilePath                 | expectedVariant
-    ${variantFileName}              | ${"." + sep + variantFileName}
-    ${"." + variantFileName}        | ${"." + variantFileName}
-    ${"." + sep + variantFileName}  | ${"." + sep + variantFileName}
-    ${".." + sep + variantFileName} | ${".." + sep + variantFileName}
+    variantPath                 | expectedVariant
+    ${variantPath}              | ${"." + sep + variantPath}
+    ${"." + variantPath}        | ${"." + variantPath}
+    ${"." + sep + variantPath}  | ${"." + sep + variantPath}
+    ${".." + sep + variantPath} | ${".." + sep + variantPath}
   `(
-    "when given a variant path ($variantFilePath)",
-    ({ variantFilePath, expectedVariant }) => {
-      const path = resolve(joinPointFolder, variantFilePath);
-      const variantFiles = [
-        {
-          name: basename(variantFilePath),
-          path
-        }
-      ];
+    "when given a variant path ($variantPath)",
+    ({ variantPath, expectedVariant }) => {
+      const path = resolve(joinPointFolder, variantPath);
+      const variantPaths = new Set([resolve(joinPointFolder, variantPath)]);
 
       const makeCommonAssertions = () => {
         it("should call the joinPointResolver with the path to the variant file", () => {
@@ -76,24 +71,25 @@ describe("processVariantFiles", () => {
       };
 
       describe("when given a variant file that is not valid according to the configured config files", () => {
-        const joinPointPath = join(
-          joinPointFolder,
-          "test-not-matching-control"
-        );
+        const filename = "test-not-matching-control";
+        const joinPointPath = join(joinPointFolder, filename);
 
         beforeEach(async () => {
           pointCut.joinPointResolver.mockReturnValue(joinPointPath);
           isJoinPointInvalid.mockReturnValue(true);
-          await act({ variantFiles, configFiles: new Map() });
+          await act({
+            variantPaths,
+            configFiles: new Map()
+          });
         });
 
         makeCommonAssertions();
 
         it("should call isJoinPointInvalid with the expected arguments", () => {
           expect(isJoinPointInvalid).toHaveBeenCalledWith({
-            name: variantFiles[0].name,
+            filename,
             joinPointPath,
-            joinDirectory: joinPointFolder,
+            directory: joinPointFolder,
             ...rest
           });
         });
@@ -112,16 +108,16 @@ describe("processVariantFiles", () => {
         describe("and no config file precludes it being valid", () => {
           beforeEach(async () => {
             isJoinPointInvalid.mockReturnValue(false);
-            await act({ variantFiles });
+            await act({ variantPaths });
           });
 
           makeCommonAssertions();
 
           it("should call isJoinPointInvalid with the expected arguments", () => {
             expect(isJoinPointInvalid).toHaveBeenCalledWith({
-              name: variantFiles[0].name,
+              filename: moduleFile,
               joinPointPath,
-              joinDirectory: joinPointFolder,
+              directory: joinPointFolder,
               ...rest
             });
           });
@@ -149,7 +145,7 @@ describe("processVariantFiles", () => {
               pointCut: testOtherPointCut
             });
             await act({
-              variantFiles
+              variantPaths
             });
           });
 

@@ -8,19 +8,19 @@ import lazyComponentLoadStrategyFactory from "@asos/web-toggle-point-react-point
 
 const configPointCutConfig = {
   name: "configuration variants",
-  variantGlob: "./src/routes/config/__variants__/*/*/*.jsx",
+  variantGlobs: ["./src/routes/config/__variants__/*/*/*.jsx"],
   togglePointModuleSpecifier: "/src/routes/config/togglePoint.js",
-  loadStrategy: lazyComponentLoadStrategyFactory()
+  loadStrategy: lazyComponentLoadStrategyFactory(),
 };
 
 const common = {
   mode: "production",
   devtool: "source-map",
   experiments: {
-    outputModule: true
+    outputModule: true,
   },
   output: {
-    module: true
+    module: true,
   },
   module: {
     rules: [
@@ -28,16 +28,16 @@ const common = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
+          loader: "babel-loader",
+        },
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"]
-      }
-    ]
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
+    ],
   },
-  plugins: [new MiniCssExtractPlugin()]
+  plugins: [new MiniCssExtractPlugin()],
 };
 
 const config = [
@@ -49,9 +49,9 @@ const config = [
       ...common.output,
       path: resolve(dirname(fileURLToPath(import.meta.url)), "bin"),
       filename: "server.mjs",
-      clean: true
+      clean: true,
     },
-    externals: [externals()],
+    externals: [externals({ importType: "module" })],
     plugins: [
       ...common.plugins,
       new TogglePointInjectionPlugin({
@@ -59,7 +59,9 @@ const config = [
           configPointCutConfig,
           {
             name: "animal apis by version",
-            variantGlob: "./src/routes/animals/api/**/v[1-9]*([0-9])/*.js",
+            variantGlobs: [
+              "./src/routes/animals/api/**/v{1..9}*([[:digit:]])/*.js",
+            ],
             joinPointResolver: (variantPath) =>
               posix.resolve(
                 variantPath,
@@ -67,11 +69,11 @@ const config = [
                 basename(variantPath)
               ),
             togglePointModuleSpecifier: "/src/routes/animals/togglePoint.js",
-            loadStrategy: staticLoadStrategyFactory()
-          }
-        ]
-      })
-    ]
+            loadStrategy: staticLoadStrategyFactory(),
+          },
+        ],
+      }),
+    ],
   },
   {
     entry: "./src/routes/config/client.js",
@@ -80,11 +82,11 @@ const config = [
     output: {
       ...common.output,
       path: resolve(dirname(fileURLToPath(import.meta.url)), "public"),
-      filename: "main.mjs"
+      filename: "main.mjs",
     },
     plugins: [
       ...common.plugins,
-      new TogglePointInjectionPlugin({ pointCuts: [configPointCutConfig] })
+      new TogglePointInjectionPlugin({ pointCuts: [configPointCutConfig] }),
     ],
     module: {
       ...common.module,
@@ -92,12 +94,12 @@ const config = [
         {
           test: /\.js$/,
           enforce: "pre",
-          use: ["source-map-loader"]
+          use: ["source-map-loader"],
         },
-        ...common.module.rules
-      ]
-    }
-  }
+        ...common.module.rules,
+      ],
+    },
+  },
 ];
 
 export default config;
