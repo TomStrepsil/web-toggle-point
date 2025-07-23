@@ -157,6 +157,19 @@ describe("resolveJoinPoints", () => {
           });
         };
 
+        describe("and the file cannot be resolved", () => {
+          beforeEach(() => {
+            mockResolvedResource = false;
+            beforeResolveCallback(resolveData);
+          });
+
+          makeCommonAssertions();
+
+          it("should not try to handle a match", () => {
+            expect(handleJoinPointMatch).not.toHaveBeenCalled();
+          });
+        });
+
         describe("and the file is not a join point", () => {
           beforeEach(() => {
             mockResolvedResource = join(appRoot, "some-other-file");

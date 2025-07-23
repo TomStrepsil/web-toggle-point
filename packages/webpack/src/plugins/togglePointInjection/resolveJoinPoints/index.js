@@ -7,6 +7,33 @@ const { relative } = posix;
 const isLoaderlessFileRequest = (request) =>
   [".", "/"].includes(request.at(0)) && !request.includes("!");
 
+const matchJoinPointIfResolved = async ({
+  enhancedResolve,
+  resolveData,
+  appRoot,
+  joinPointFiles,
+  compilation
+}) => {
+  const resolved = await enhancedResolve(
+    {},
+    resolveData.context,
+    resolveData.request,
+    {}
+  );
+  if (!resolved) {
+    return;
+  }
+
+  const resource = `/${relative(appRoot, resolved.replaceAll(sep, posix.sep))}`;
+  if (joinPointFiles.has(resource)) {
+    handleJoinPointMatch({
+      resource,
+      compilation,
+      resolveData
+    });
+  }
+};
+
 const resolveJoinPoints = ({
   compilation,
   appRoot,
@@ -29,21 +56,13 @@ const resolveJoinPoints = ({
         return;
       }
 
-      const resolved = await enhancedResolve(
-        {},
-        resolveData.context,
-        resolveData.request,
-        {}
-      );
-
-      const resource = `/${relative(appRoot, resolved.replaceAll(sep, posix.sep))}`;
-      if (joinPointFiles.has(resource)) {
-        handleJoinPointMatch({
-          resource,
-          compilation,
-          resolveData
-        });
-      }
+      await matchJoinPointIfResolved({
+        appRoot,
+        joinPointFiles,
+        enhancedResolve,
+        resolveData,
+        compilation
+      });
     }
   );
 };
