@@ -59,7 +59,7 @@ describe("pathSegmentToggleHandler", () => {
               expect(node.has(segment)).toBe(true);
               node = node.get(segment);
             }
-            expect(node).toBe(variantPathMap[key]);
+            expect(node).toBe(variantPathMap.get(key));
           }
         });
       });
