@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- updated toggle handlers to take a `variantPathMap` corresponding to webpack [version 0.9.0](../../../packages/webpack/docs/CHANGELOG.md#090---2025-05-29)
+- updated toggle handlers to take a `variantPathMap` corresponding to webpack [version 0.9.0](../../../packages/webpack/docs/CHANGELOG.md#090---2025-07-29)
 
 ## [0.2.6] - 2025-07-14
 
