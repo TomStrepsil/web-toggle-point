@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - removed "Vary" header from "animals" example, the page is meant to be un-cacheable, and the value was wrong in any case
+- import types explicitly from `@playwright/test` after unexpected pipeline failure
 
 ## [0.2.5] - 2025-05-27
 

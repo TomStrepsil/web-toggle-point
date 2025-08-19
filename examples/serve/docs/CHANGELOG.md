@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - updated toggle handlers to take a `variantPathMap` corresponding to webpack [version 0.9.0](../../../packages/webpack/docs/CHANGELOG.md#090---2025-07-29)
 
+### Fixed
+
+- import types explicitly from `@playwright/test` after unexpected pipeline failure
+
 ## [0.2.6] - 2025-07-14
 
 ### Changed
