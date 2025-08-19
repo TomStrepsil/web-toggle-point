@@ -1,4 +1,4 @@
-import {
+import type {
   TestType,
   PlaywrightTestArgs,
   PlaywrightTestOptions,
