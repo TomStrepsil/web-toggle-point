@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- import types explicitly from `@playwright/test` after unexpected pipeline failure
+- import types explicitly from `@playwright/test` & internally, after unexpected pipeline failure
 
 ## [0.2.4] - 2025-05-27
 

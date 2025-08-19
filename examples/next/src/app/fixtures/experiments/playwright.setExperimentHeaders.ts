@@ -6,7 +6,7 @@ import {
   PlaywrightWorkerOptions
 } from "@playwright/test";
 
-import { Experiments, Decision } from "./experiments";
+import type { Experiments, Decision } from "./experiments";
 
 const setExperimentHeaders = (
   test: TestType<
