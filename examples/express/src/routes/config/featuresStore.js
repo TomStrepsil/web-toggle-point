@@ -1,4 +1,4 @@
-import { ssrBackedReactContextFeaturesStoreFactory as featuresStoreFactory } from "@asos/web-toggle-point-features";
+import featuresStoreFactory from "@asos/web-toggle-point-features/storeFactories/ssrBackedReactContextFeaturesStoreFactory";
 
 const featuresStore = featuresStoreFactory({
   name: "config",
