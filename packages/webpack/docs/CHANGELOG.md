@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - removed "next" peer dependency, this needn't be explicit
 - ensured files that cannot be resolved (by [enhanced-resolve](https://github.com/webpack/enhanced-resolve/)), for whatever reason, don't break the build
+- don't try and filter potential resolutions, let enhanced-resolve try and potentially fail, to allow for resolve plugins to have irregular specifiers (e.g. path alias')
 - ensured that circular dependencies don't cause the module graph search lock up
 
 ## [0.8.0] - 2025-05-27
