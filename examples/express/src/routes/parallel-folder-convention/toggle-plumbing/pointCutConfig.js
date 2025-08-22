@@ -21,13 +21,22 @@ export default [
     ...common
   },
   {
-    name: "css modules & constants & redux store slices",
+    name: "css modules & constants & redux slices",
     togglePointModule:
       "/src/routes/parallel-folder-convention/toggle-plumbing/toggle-points/objectProxyTogglePoint",
     variantGlobs: [
       "./src/routes/parallel-folder-convention/__variants__/*/components/**/*.css",
       "./src/routes/parallel-folder-convention/__variants__/*/constants/**/*.ts",
       "./src/routes/parallel-folder-convention/__variants__/*/state/modules/*/slice.ts"
+    ],
+    ...common
+  },
+  {
+    name: "redux reducer maps",
+    togglePointModule:
+      "/src/routes/parallel-folder-convention/toggle-plumbing/toggle-points/reduxReducerMapTogglePoint",
+    variantGlobs: [
+      "./src/routes/parallel-folder-convention/__variants__/*/state/modules/index.ts"
     ],
     ...common
   }

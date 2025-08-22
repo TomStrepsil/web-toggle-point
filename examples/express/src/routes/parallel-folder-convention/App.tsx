@@ -16,6 +16,7 @@ export default function App() {
         <option value="feature2">feature 2 🐹</option>
         <option value="feature3">feature 3 🐰</option>
         <option value="feature4">feature 4 🦀</option>
+        <option value="feature5">feature 5 🪐</option>
       </select>
       <TopBox />
       <BottomBox />

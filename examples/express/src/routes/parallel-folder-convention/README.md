@@ -110,6 +110,23 @@ Varied constant (`constants/index.ts`) & redux slice (`slice.ts`) with replaced 
             └── slice.ts
 ```
 
+### _feature5_
+
+Varied component (`TopBox`) & redux store (`modules/index.ts`) that introduces a new "space" slice, with it's own state containing spacey stuff.
+
+```bash
+├── components
+│   └── TopBox
+│       ├── index.tsx
+│       ├── styles.module.css
+│       └── useSpaceStuff.ts
+└── state
+    └── modules
+        ├── space
+        │   └── slice.ts
+        └── index.ts
+```
+
 ## Explanation
 
 The webpack plugin is configured with a toggle handler that maps variants to controls based on a parallel root folder.  This allows for any file to be replaced at any depth.  The example shows both complete replacements, and augmentations (importing of the base, then modifying).
@@ -117,6 +134,8 @@ The webpack plugin is configured with a toggle handler that maps variants to con
 To vary react components, the toggle point from the `react-pointcuts` package is used.
 
 To vary CSS files, constants, and [`redux` "slices"](https://redux.js.org/tutorials/essentials/part-2-app-structure#redux-slices), a toggle point is used that utilises an [object proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy), to intercept property access.  Despite objects not being innately reactive, as long as they are accessed from something that does update with change of state (i.e. react components), their properties will also update based on the new feature.
+
+To vary `redux` reducer map, a toggle point that wraps the factory method (`getReducerMap`) is used.
 
 To ensure that the redux store is reactive to feature state, a `StateProvider` react component is used to host the [react-redux provider](https://react-redux.js.org/api/provider), that subscribes to the valtio state, and calls [replaceReducer](https://redux.js.org/usage/code-splitting#using-replacereducer) from the [`@reduxjs/toolkit`](https://github.com/reduxjs/redux-toolkit) whenever the feature state changes.  This ensures a new redux store (but retaining current state) is made available to the react components.  Care should be taken to ensure the existing state is compatible with any updated selectors etc.
 
