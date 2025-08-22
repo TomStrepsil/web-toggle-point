@@ -3,14 +3,9 @@ import { FEATURE_KEY } from "../constants";
 
 const getRelevantModule = (joinPoint, featuresMap) => {
   const activeFeatures = featuresMap.get(FEATURE_KEY);
-  try {
-    const { selection } = getFeatures();
-
-    const variant = activeFeatures.get(selection);
-    return variant ?? joinPoint;
-  } catch {
-    return joinPoint;
-  }
+  const { selection } = getFeatures();
+  const variant = activeFeatures.get(selection);
+  return variant ?? joinPoint;
 };
 
 const togglePoint = (joinPoint, featuresMap) => {

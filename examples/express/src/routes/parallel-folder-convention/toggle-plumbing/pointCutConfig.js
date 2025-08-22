@@ -21,20 +21,12 @@ export default [
     ...common
   },
   {
-    name: "css modules & constants",
+    name: "css modules & constants & redux store slices",
     togglePointModule:
       "/src/routes/parallel-folder-convention/toggle-plumbing/toggle-points/objectProxyTogglePoint",
     variantGlobs: [
       "./src/routes/parallel-folder-convention/__variants__/*/components/**/*.css",
-      "./src/routes/parallel-folder-convention/__variants__/*/constants/**/*.ts"
-    ],
-    ...common
-  },
-  {
-    name: "redux slices",
-    togglePointModule:
-      "/src/routes/parallel-folder-convention/toggle-plumbing/toggle-points/reduxSliceTogglePoint",
-    variantGlobs: [
+      "./src/routes/parallel-folder-convention/__variants__/*/constants/**/*.ts",
       "./src/routes/parallel-folder-convention/__variants__/*/state/modules/*/slice.ts"
     ],
     ...common

@@ -1,13 +1,12 @@
 import TopBox from "./components/TopBox";
 import BottomBox from "./components/BottomBox";
-import { Provider } from "react-redux";
-import store from "./state/store";
+import StateProvider from "./StateProvider";
 import { getFeatures, setValue } from "./toggle-plumbing/featuresStore";
 import "./styles.css";
 
 export default function App() {
   return (
-    <Provider store={store}>
+    <StateProvider>
       <select
         onChange={({ target: { value: selection } }) => setValue({ selection })}
         defaultValue={getFeatures().selection}
@@ -20,6 +19,6 @@ export default function App() {
       </select>
       <TopBox />
       <BottomBox />
-    </Provider>
+    </StateProvider>
   );
 }

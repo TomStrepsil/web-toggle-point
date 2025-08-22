@@ -1,5 +1,7 @@
 import animalsSlice from "./animals/slice";
 
-export default {
+const getReducerMap = () => ({
   animals: animalsSlice.reducer
-};
+});
+
+export default getReducerMap;
