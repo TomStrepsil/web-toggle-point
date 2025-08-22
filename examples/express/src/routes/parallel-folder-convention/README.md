@@ -72,7 +72,7 @@ Varied react components (`TopBox` & `BottomBox`), at various depths in the folde
 
 ### _feature2_
 
-Varied constant (`constants/index.ts`), react component (`TopBoxChild`) and redux slice (`slice.ts`) connecting an additional  action creator (`useFreeAnimal.ts`) to "free" added animals (clears the state collection) 
+Varied constant (`constants/index.ts`), react component (`TopBoxChild`) and redux slice (`slice.ts`) connecting an additional  action creator (`useFreeAnimal.ts`) to "free" added animals (clears the state collection).  Has an alternate "initial state" containing two hamsters, activated during server rendering by a `feature` header containing `feature2`.
 
 ```bash
 ├── components
