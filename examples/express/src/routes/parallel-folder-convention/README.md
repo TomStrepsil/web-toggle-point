@@ -10,9 +10,9 @@ An inbound header named "feature" can take the following values:
 - feature3
 - feature4
 
-...which is used server side (via a "node request scoped features store") to generate appropriate server-rendered content.
+...which is used server side (via a ["node request scoped features store"](../../../../../packages/features/docs/README.md#noderequestscopedfeaturesstorefactory)) to generate appropriate server-rendered content.
 
-The chosen feature state is serialized to the browser using the `ssr` package, and loaded into a "global features store", using [`valtio`](https://github.com/pmndrs/valtio), for reactivity.
+The chosen feature state is serialized to the browser using the `ssr` package, and loaded into a ["global features store"](../../../../../packages/features/docs/README.md#globalfeaturesstorefactory), using [`valtio`](https://github.com/pmndrs/valtio), for reactivity.
 
 To demonstrate the reactivity, a drop-down allows changing of the selected feature state.
 
