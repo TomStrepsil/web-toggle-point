@@ -10,7 +10,7 @@ Some example applications based on an [express](https://expressjs.com/) router
 
    This example shows the use of the [`react-pointcuts`](../../packages/react-pointcuts/docs/README.md), [`features`](../../packages/features/docs/README.md), [`ssr`](../../packages/ssr/docs/README.md) and [`webpack`](../../packages/webpack/docs/README.md) packages.
 
-3. [parallel-folder-convention](./src/routes/config/README.md)
+3. [parallel-folder-convention](./src/routes/parallel-folder-convention/README.md)
 
    This example shows the use of the [`react-pointcuts`](../../packages/react-pointcuts/docs/README.md), [`features`](../../packages/features/docs/README.md), [`ssr`](../../packages/ssr/docs/README.md) and [`webpack`](../../packages/webpack/docs/README.md) packages.
 
