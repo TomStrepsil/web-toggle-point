@@ -12,7 +12,7 @@ An inbound header named "feature" can take the following values:
 
 ...which is used server side (via a ["node request scoped features store"](../../../../../packages/features/docs/README.md#noderequestscopedfeaturesstorefactory)) to generate appropriate server-rendered content.
 
-The chosen feature state is serialized to the browser using the `ssr` package, and loaded into a ["global features store"](../../../../../packages/features/docs/README.md#globalfeaturesstorefactory), using [`valtio`](https://github.com/pmndrs/valtio), for reactivity.
+The chosen feature state is serialized to the browser using the `ssr` package, and loaded into a ["global features store"](../../../../../packages/features/docs/README.md#globalfeaturesstorefactory), using [`valtio`](https://github.com/pmndrs/valtio) browser-side, for reactivity.
 
 To demonstrate the reactivity, a drop-down allows changing of the selected feature state.
 
@@ -120,3 +120,4 @@ To vary CSS files, constants, and [`redux` "slices"](https://redux.js.org/tutori
 
 To ensure that the redux store is reactive to feature state, a `StateProvider` react component is used to host the [react-redux provider](https://react-redux.js.org/api/provider), that subscribes to the valtio state, and calls [replaceReducer](https://redux.js.org/usage/code-splitting#using-replacereducer) from the [`@reduxjs/toolkit`](https://github.com/reduxjs/redux-toolkit) whenever the feature state changes.  This ensures a new redux store (but retaining current state) is made available to the react components.  Care should be taken to ensure the existing state is compatible with any updated selectors etc.
 
+N.B. It is assumed that feature state will not change during a request cycle on the server, so `valtio` is only plumbed in to the client-side feature store, via conditional compilation using [Webpack's `DefinePlugin`](https://webpack.js.org/plugins/define-plugin/).
