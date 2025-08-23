@@ -21,14 +21,12 @@
   );
 }
 
-/* Sparse starfield */
 .space::after {
   content: "";
   position: absolute;
   inset: -25%;
   pointer-events: none;
 
-  /* Few layers, spread wider = sparse stars */
   background-image: radial-gradient(
       rgba(255, 255, 255, 0.9) 1px,
       transparent 1.2px
@@ -47,7 +45,6 @@
   opacity: 0.8;
 }
 
-/* Emojis float above the background */
 .space > * {
   position: relative;
   display: inline-block;
@@ -55,7 +52,6 @@
   animation: float-ellipse 5s linear infinite;
 }
 
-/* Phase offsets */
 .space > *:nth-child(3n + 1) {
   animation-delay: 0s;
 }
@@ -74,8 +70,6 @@
     animation: none;
   }
 }
-
-/* Elliptical drift (very subtle) */
 @keyframes float-ellipse {
   0% {
     transform: translate(0.48em, 0em);
@@ -94,7 +88,6 @@
   }
 }
 
-/* Gentle drift of the whole star layer */
 @keyframes star-drift {
   0% {
     background-position:
@@ -108,7 +101,6 @@
   }
 }
 
-/* Soft twinkle effect */
 @keyframes twinkle {
   0% {
     opacity: 0.6;
