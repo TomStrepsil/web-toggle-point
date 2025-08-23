@@ -1,14 +1,14 @@
 import { Router, static as assetsFolder } from "express";
 import { renderToPipeableStream } from "react-dom/server";
-import { getScriptReactElement } from "./toggle-plumbing/serialization";
-import { setValue, getFeatures } from "./toggle-plumbing/featuresStore";
+import { getFeaturesScript } from "./toggle-plumbing/serialization";
+import { setValue } from "./toggle-plumbing/featuresStore";
 import App from "./App";
 
 const router = new Router();
 router.use(assetsFolder("public"));
 router.use("/*", (request, _, scopeCallBack) => {
   setValue({
-    value: { selection: request.headers.feature || "baseline" },
+    value: { selection: request.headers.feature ?? "baseline" },
     scopeCallBack
   });
 });
@@ -28,7 +28,7 @@ router.get("/*", (_, res) => {
           rel="stylesheet"
         />
         <link href="parallel-folder-convention.css" rel="stylesheet" />
-        {getScriptReactElement({ content: getFeatures() })}
+        {getFeaturesScript()}
       </head>
       <body>
         <div>
