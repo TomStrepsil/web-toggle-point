@@ -4,7 +4,7 @@ const resourceProxyExistsInRequestChain = ({
   proxyResource
 }) => {
   const queue = [issuerModule];
-  const visited = new Set();
+  const visited = new WeakSet();
   while (queue.length) {
     const node = queue.shift();
     if (node.resource === proxyResource) {
