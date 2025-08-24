@@ -1,4 +1,4 @@
-import { nodeRequestScopedStoreFactory as featuresStoreFactory } from "@asos/web-toggle-point-features";
+import featuresStoreFactory from "@asos/web-toggle-point-features/storeFactories/nodeRequestScopedFeaturesStoreFactory";
 
 const featuresStore = featuresStoreFactory();
 
