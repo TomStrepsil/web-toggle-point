@@ -11,10 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - update to take supply static `webpackNormalModule` corresponding to webpack plugin [version 0.9.0](../../../packages/webpack/docs/CHANGELOG.md#090---2025-07-29)
 
-### Fixed
-
-- import types explicitly from `@playwright/test` & internally, after unexpected pipeline failure
-
 ## [0.2.4] - 2025-05-27
 
 ### Changed
