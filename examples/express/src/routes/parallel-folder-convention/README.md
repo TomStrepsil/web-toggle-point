@@ -51,7 +51,7 @@ The features comprise the following:
 
 ### _baseline_
 
-The base experience. Clicking the dog dispatches a redux action adding a dog to the bottom box
+The base experience. Clicking the dog dispatches a redux action adding a dog to the bottom box.
 
 ### _feature1_
 
@@ -86,7 +86,7 @@ Varied constant (`constants/index.ts`), react component (`TopBoxChild`) and redu
 
 ### _feature3_
 
-Varied constant (`constants/index.ts`) & redux slice (`slice.ts`) with modified reducer action that multiplies rabbits, when added
+Varied constant (`constants/index.ts`) & redux slice (`slice.ts`) with modified reducer action that multiplies rabbits, when added.
 
 ```bash
 ├── constants
@@ -99,7 +99,7 @@ Varied constant (`constants/index.ts`) & redux slice (`slice.ts`) with modified 
 
 ### _feature4_
 
-Varied constant (`constants/index.ts`) & redux slice (`slice.ts`) with replaced redux selector that carcinizes previously added animals
+Varied constant (`constants/index.ts`) & redux slice (`slice.ts`) with replaced redux selector that carcinises previously added animals.
 
 ```bash
 ├── constants
