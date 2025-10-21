@@ -2,7 +2,9 @@ import { proxy, useSnapshot } from "valtio";
 import featuresStoreFactory from "@asos/web-toggle-point-features/storeFactories/globalFeaturesStoreFactory";
 import { getJSONFromScript } from "../serialization";
 
-const { setValue: storeSetValue, getFeatures } = featuresStoreFactory();
+const { setValue: storeSetValue, getFeatures } = featuresStoreFactory({
+  toggleType: "version"
+});
 
 storeSetValue({ value: proxy({}) });
 export const setValue = (input) => {

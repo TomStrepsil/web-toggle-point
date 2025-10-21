@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.0] - 2025-07-29
+## [0.9.0] - 2025-10-21
 
 ### Changed
 
@@ -19,7 +19,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - removed "next" peer dependency, this needn't be explicit
 - ensured files that cannot be resolved (by [enhanced-resolve](https://github.com/webpack/enhanced-resolve/)), for whatever reason, don't break the build
+- don't try and filter potential resolutions, let enhanced-resolve try and potentially fail, to allow for resolve plugins to have irregular specifiers (e.g. path alias')
 - ensured that circular dependencies don't cause the module graph search lock up
+- correct README.md to show `toggleHandler` as an option of the `pointCut`, not the general plugin configuration
+
+## [0.8.3] - 2025-09-30
+
+### Fixed
+
+- Used the `prepare-publish.mjs` script provided by repo root version [0.12.0](../../../docs/CHANGELOG.md#0120---2025-09-30) to fix relative links in `README.md` on [npmjs.com](https://www.npmjs.com/) that were moved as part of [0.8.1](#081---2025-07-14)
+
+## [0.8.2] - 2025-09-29
+
+### Fixed
+
+- No need for the `webpackNormalModule` parameter to be an async function, just needed to get static imports correct
+
+## [0.8.1] - 2025-07-14
+
+### Fixed
+
+- ensured that `README.md` is included in the root of the npm package, to conform to [npmjs.org requirement](https://docs.npmjs.com/about-package-readme-files):
+> An npm package `README.md` file **must** be in the root-level directory of the package.
+- ensured that `LICENSE` is included in the npm package
+
+### Added
+
+- [keywords](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#keywords) added to the `package.json` to aid npm search
 
 ## [0.8.0] - 2025-05-27
 

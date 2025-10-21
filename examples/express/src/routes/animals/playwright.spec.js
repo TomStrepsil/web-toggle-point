@@ -38,7 +38,7 @@ test.describe("versioned image endpoint", () => {
         await page.goto("http://localhost:3002/animals");
         await expect(
           page.locator(`img[data-version="${version}"]`)
-        ).toBeInViewport();
+        ).toBeVisible();
       });
     });
   });

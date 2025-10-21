@@ -1,7 +1,7 @@
 import { withJsonIsomorphism } from "@asos/web-toggle-point-ssr";
 import { render, screen } from "@testing-library/react";
-import reactContextFeaturesStoreFactory from "../reactContext/store";
-import ssrBackedReactContextFeaturesStoreFactory from "./store";
+import reactContextFeaturesStoreFactory from "./reactContextFeaturesStoreFactory";
+import ssrBackedReactContextFeaturesStoreFactory from "./ssrBackedReactContextFeaturesStoreFactory";
 
 const MockSSRBackedFeaturesProvider = jest.fn(({ children }) => (
   <div data-testid="test-ssr-backed-features-provider">{children}</div>
@@ -12,12 +12,12 @@ jest.mock("@asos/web-toggle-point-ssr", () => ({
 const mockOtherStuff = {
   [Symbol("rest")]: Symbol("rest")
 };
-const mockReactContextStoreFactory = {
+const mockReactContextFeaturesStoreFactory = {
   providerFactory: jest.fn(),
   ...mockOtherStuff
 };
-jest.mock("../reactContext/store", () =>
-  jest.fn(() => mockReactContextStoreFactory)
+jest.mock("./reactContextFeaturesStoreFactory", () =>
+  jest.fn(() => mockReactContextFeaturesStoreFactory)
 );
 
 describe("ssrBackedReactContextFeaturesStoreFactory", () => {
@@ -25,15 +25,15 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
 
   beforeEach(() => {
     props = {
-      name: "test-name",
+      toggleType: "test-toggle-type",
       logWarning: Symbol("test-log-warning")
     };
   });
 
   const makeCommonAssertions = () => {
-    it("should call the reactContextStoreFactory with the name", () => {
+    it("should call the reactContextStoreFactory with the toggleType", () => {
       expect(reactContextFeaturesStoreFactory).toHaveBeenCalledWith({
-        name: props.name
+        toggleType: props.toggleType
       });
     });
 
@@ -52,16 +52,18 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
       });
 
       it("should create a reactContextStore via the reactContextStoreFactory", () => {
-        expect(mockReactContextStoreFactory.providerFactory).toHaveBeenCalled();
+        expect(
+          mockReactContextFeaturesStoreFactory.providerFactory
+        ).toHaveBeenCalled();
       });
 
-      it("should create an SSR-backed react component that serializes the provided value in a script with a namespace & named id", () => {
+      it("should create an SSR-backed react component that serializes the provided value in a script with a namespace & named id, using the supplied toggleType", () => {
         expect(withJsonIsomorphism).toHaveBeenCalledWith(
           expect.any(Function),
           props.logWarning,
           {
             scriptId: expect.any(String),
-            propName: props.name
+            propName: props.toggleType
           }
         );
       });
@@ -81,7 +83,7 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
         it("should pass the value to the SSR-backed component", () => {
           expect(MockSSRBackedFeaturesProvider).toHaveBeenCalledWith(
             expect.objectContaining({
-              [props.name]: value
+              [props.toggleType]: value
             }),
             expect.anything()
           );
@@ -110,7 +112,7 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
         expect.anything(),
         expect.anything(),
         expect.objectContaining({
-          scriptId: `${props.namespace}_${props.name}`
+          scriptId: `${props.namespace}_${props.toggleType}`
         })
       );
     });
@@ -128,7 +130,7 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
         expect.anything(),
         expect.anything(),
         expect.objectContaining({
-          scriptId: `toggles_${props.name}`
+          scriptId: `toggles_${props.toggleType}`
         })
       );
     });

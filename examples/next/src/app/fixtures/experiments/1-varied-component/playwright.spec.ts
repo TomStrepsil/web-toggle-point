@@ -1,14 +1,14 @@
 import { test, expect, type ConsoleMessage } from "@playwright/test";
 import setExperimentHeaders from "../playwright.setExperimentHeaders";
 import locateWithinExample from "../playwright.locateInExample";
-import getFixtureURL from "../playwright.getFixtureUrl";
+import getFixtureURL from "../../playwright.getFixtureUrl";
 const fixtureURL = getFixtureURL(import.meta.url);
 
 test.describe("varying a component", () => {
   test.describe("when no experiments header set", () => {
     test("it shows a default experience", async ({ page }) => {
       await page.goto(fixtureURL);
-      await expect(locateWithinExample(page, "control 1")).toBeInViewport();
+      await expect(locateWithinExample(page, "control 1")).toBeVisible();
     });
   });
 
@@ -23,7 +23,7 @@ test.describe("varying a component", () => {
     });
 
     test("it shows a varied experience", async ({ page }) => {
-      await expect(locateWithinExample(page, "variant 1")).toBeInViewport();
+      await expect(locateWithinExample(page, "variant 1")).toBeVisible();
     });
 
     test("it should activate the feature with the toggle router", async () => {

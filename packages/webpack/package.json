@@ -12,6 +12,13 @@
     },
     "./pathSegmentToggleHandler": "./lib/pathSegmentToggleHandler.js"
   },
+  "keywords": [
+    "toggle point",
+    "feature toggles",
+    "feature flags",
+    "webpack",
+    "module proxy"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/asos/web-toggle-point.git",
@@ -26,10 +33,11 @@
   },
   "scripts": {
     "build": "npm run clean && rollup -c build/rollup.mjs",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "node ../prepare-publish.mjs && npm run build",
+    "postpublish": "shx rm ./README.md LICENSE",
     "clean": "rimraf ./lib",
     "docs": "rimraf ./docs/**/*.html && jsdoc -c ../jsdoc.conf.js",
-    "lint": "eslint build src docs --flag unstable_config_lookup_from_file",
+    "lint": "eslint build src docs --flag v10_config_lookup_from_file",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest"
   },
@@ -54,7 +62,9 @@
     "schema-utils": "^4.2.0",
     "webpack": "^5.88.2",
     "webpack-cli": "^4.10.0",
-    "webpack-test-utils": "^2.1.0"
+    "webpack-test-utils": "^2.1.0",
+    "shx": "^0.4.0",
+    "transform-markdown-links": "^2.1.0"
   },
   "peerDependencies": {
     "webpack": ">=5.70"
