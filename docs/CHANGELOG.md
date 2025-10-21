@@ -14,12 +14,46 @@ N.B. See changelogs for individual packages, where most change will occur:
 
 This log covers the [monorepo](https://en.wikipedia.org/wiki/Monorepo).
 
-## [0.10.7] - 2025-07-29
+## [0.13.0] - 2025-10-21
 
 ### Changed
 
 - updated to `0.11.0` of [`eslint-plugin-workspaces`](https://github.com/joshuajaco/eslint-plugin-workspaces) after [addition of ESLint9 support](https://github.com/joshuajaco/eslint-plugin-workspaces/commit/af855c3a3d8069366d4446747e91828ddf7560c6)
   - update `eslint.config.mjs` to utilise flat config
+
+## [0.12.0] - 2025-09-30
+
+### Added
+
+- a `build:examples` script, for easy re-building of all examples
+
+### Fixed
+
+- added a `prepare-publish.mjs` script to prepare packages for npm publishing (moving `README.md` and `LICENSE` files into package roots), replacing the prior `shx` based solution, and adding [`transform-markdown-links`](https://github.com/gakimball/transform-markdown-links) to fix relative paths that otherwise incorrectly link on [npmjs.com](https://www.npmjs.com/)
+
+### Changed
+
+- updated [`danger-js`](https://github.com/danger/danger-js) to [version 13.0.3](https://github.com/danger/danger-js/blob/main/CHANGELOG.md#1303), to remove high vulnerabilities
+
+## [0.11.0] - 2025-09-29
+
+### Changed
+
+- removed the `tags` badge from main `README.md`, this monorepo does not use release tags
+
+### Added
+
+- a `discussion` badge
+
+## [0.10.7] - 2025-07-14
+
+### Fixed
+
+- removed `keywords` from `package.json` (in package root and peripherals), since serving no purpose in private packages
+
+### Added
+
+- `.npmrc` for ensuring correct registry
 
 ## [0.10.6] - 2025-07-14
 

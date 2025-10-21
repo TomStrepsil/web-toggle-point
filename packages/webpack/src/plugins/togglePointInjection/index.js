@@ -57,7 +57,7 @@ class TogglePointInjection {
         fileSystem: compiler.inputFileSystem,
         options: this.options
       }));
-      NormalModule = await this.options.webpackNormalModule;
+      NormalModule = this.options.webpackNormalModule;
     });
 
     compiler.hooks.compilation.tap(

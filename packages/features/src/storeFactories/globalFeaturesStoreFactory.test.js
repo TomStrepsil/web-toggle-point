@@ -1,28 +1,29 @@
-import globalFeaturesStoreFactory from "./store";
+import globalFeaturesStoreFactory from "./globalFeaturesStoreFactory";
 
 describe("globalFeaturesStoreFactory", () => {
+  const toggleType = "test-toggle-type";
   let featuresStoreFactory;
 
   beforeEach(() => {
-    featuresStoreFactory = globalFeaturesStoreFactory();
+    featuresStoreFactory = globalFeaturesStoreFactory({ toggleType });
   });
 
-  describe("when using a value", () => {
+  describe("when setting a value", () => {
     const value = Symbol("test-value");
 
     beforeEach(() => {
-      featuresStoreFactory.useValue({ value });
+      featuresStoreFactory.setValue({ value });
     });
 
     it("should store the value for later retrieval", () => {
       expect(featuresStoreFactory.getFeatures()).toBe(value);
     });
 
-    describe("when using a different value", () => {
+    describe("when setting a different value", () => {
       const differentValue = Symbol("different-value");
 
       beforeEach(() => {
-        featuresStoreFactory.useValue({ value: differentValue });
+        featuresStoreFactory.setValue({ value: differentValue });
       });
 
       it("should store the new value for later retrieval", () => {
@@ -34,7 +35,7 @@ describe("globalFeaturesStoreFactory", () => {
       let newFeaturesStoreFactory;
 
       beforeEach(() => {
-        newFeaturesStoreFactory = globalFeaturesStoreFactory();
+        newFeaturesStoreFactory = globalFeaturesStoreFactory({ toggleType });
       });
 
       it("should not share the value with the new store", () => {

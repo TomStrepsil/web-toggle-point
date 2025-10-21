@@ -1,5 +1,8 @@
 import createMDX from "@next/mdx";
 import remarkGfm from "remark-gfm";
+import { TogglePointInjection } from "@asos/web-toggle-point-webpack/plugins";
+import experimentPointCutConfig from "./src/app/fixtures/experiments/__pointCutConfig.js";
+import contentManagementPointCutConfig from "./src/app/fixtures/content-management/__pointCutConfig.js";
 import webpackNormalModule from "next/dist/compiled/webpack/NormalModule.js";
 
 /** @type {import('next').NextConfig} */
@@ -7,17 +10,8 @@ const nextConfig = {
   pageExtensions: ["js", "md", "mdx", "ts", "tsx"]
 };
 
-import { TogglePointInjection } from "@asos/web-toggle-point-webpack/plugins";
 const togglePointInjection = new TogglePointInjection({
-  pointCuts: [
-    {
-      name: "experiments",
-      togglePointModule: "/src/app/fixtures/experiments/withTogglePoint",
-      variantGlobs: [
-        "./src/app/fixtures/experiments/**/__variants__/*/*/!(*.spec).tsx"
-      ]
-    }
-  ],
+  pointCuts: [...experimentPointCutConfig, ...contentManagementPointCutConfig],
   webpackNormalModule
 });
 
