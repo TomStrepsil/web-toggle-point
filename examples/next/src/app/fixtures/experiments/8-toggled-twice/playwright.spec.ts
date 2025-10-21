@@ -8,7 +8,7 @@ test.describe("varying a component and varying again with a different toggle poi
   test.describe("when no experiments header set", () => {
     test("it shows the control module", async ({ page }) => {
       await page.goto(fixtureURL);
-      await expect(locateWithinExample(page, "control 1")).toBeVisible();
+      await expect(locateWithinExample(page, "control 1")).toBeInViewport();
     });
   });
 
@@ -17,7 +17,7 @@ test.describe("varying a component and varying again with a different toggle poi
 
     test("it shows a varied module", async ({ page }) => {
       await page.goto(fixtureURL);
-      await expect(locateWithinExample(page, "variant 1")).toBeVisible();
+      await expect(locateWithinExample(page, "variant 1")).toBeInViewport();
     });
 
     test.describe("when the 'a' key is pressed", () => {
@@ -27,10 +27,10 @@ test.describe("varying a component and varying again with a different toggle poi
         await page.goto(fixtureURL);
         await page.waitForTimeout(50);
         await page.keyboard.down("a");
-        await expect(locateWithinExample(page, "variant 1")).toBeVisible();
+        await expect(locateWithinExample(page, "variant 1")).toBeInViewport();
         await expect(
           page.locator("p", { hasText: "pressed: a" })
-        ).toBeVisible();
+        ).toBeInViewport();
       });
     });
 
@@ -41,10 +41,10 @@ test.describe("varying a component and varying again with a different toggle poi
         await page.goto(fixtureURL);
         await page.waitForTimeout(50);
         await page.keyboard.down("n");
-        await expect(locateWithinExample(page, "variant 2")).toBeVisible();
+        await expect(locateWithinExample(page, "variant 2")).toBeInViewport();
         await expect(
           page.locator("p", { hasText: "pressed: n" })
-        ).toBeVisible();
+        ).toBeInViewport();
       });
     });
   });

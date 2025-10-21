@@ -6,12 +6,12 @@ test.describe("site-specific content", () => {
       await page.goto("/");
       await expect(
         page.getByText("Some site-specific content: this is a default value")
-      ).toBeVisible();
+      ).toBeInViewport();
       await expect(
         page.getByText(
           "Some more site-specific content: this is a default value from subpath"
         )
-      ).toBeVisible;
+      ).toBeInViewport;
     });
   });
 
@@ -50,10 +50,10 @@ test.describe("site-specific content", () => {
         await page.goto(`/${site}`);
         await expect(
           page.getByText(`Some site-specific content: ${expected1}`)
-        ).toBeVisible();
+        ).toBeInViewport();
         await expect(
           page.getByText(`Some more site-specific content: ${expected2}`)
-        ).toBeVisible();
+        ).toBeInViewport();
       });
     });
   });

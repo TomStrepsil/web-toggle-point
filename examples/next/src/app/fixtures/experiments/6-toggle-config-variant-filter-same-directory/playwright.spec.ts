@@ -8,8 +8,8 @@ test.describe("varying a component whilst using a toggle config to control the j
   test.describe("when no experiments header set", () => {
     test("it shows two control modules", async ({ page }) => {
       await page.goto(fixtureURL);
-      await expect(locateWithinExample(page, "control 1")).toBeVisible();
-      await expect(locateWithinExample(page, "control 2")).toBeVisible();
+      await expect(locateWithinExample(page, "control 1")).toBeInViewport();
+      await expect(locateWithinExample(page, "control 2")).toBeInViewport();
     });
   });
 
@@ -20,8 +20,8 @@ test.describe("varying a component whilst using a toggle config to control the j
       page
     }) => {
       await page.goto(fixtureURL);
-      await expect(locateWithinExample(page, "variant 1")).toBeVisible();
-      await expect(locateWithinExample(page, "control 2")).toBeVisible();
+      await expect(locateWithinExample(page, "variant 1")).toBeInViewport();
+      await expect(locateWithinExample(page, "control 2")).toBeInViewport();
     });
   });
 });

@@ -8,7 +8,7 @@ test.describe("varying a variant in a second experiment", () => {
   test.describe("when no experiments header set", () => {
     test("it shows a default experience", async ({ page }) => {
       await page.goto(fixtureURL);
-      await expect(locateWithinExample(page, "control 1")).toBeVisible();
+      await expect(locateWithinExample(page, "control 1")).toBeInViewport();
     });
   });
 
@@ -23,7 +23,7 @@ test.describe("varying a variant in a second experiment", () => {
     });
 
     test("it shows a varied experience", async ({ page }) => {
-      await expect(locateWithinExample(page, "variant 1")).toBeVisible();
+      await expect(locateWithinExample(page, "variant 1")).toBeInViewport();
     });
 
     test("it should activate the feature with the toggle router", async () => {
@@ -39,7 +39,7 @@ test.describe("varying a variant in a second experiment", () => {
       });
 
       test("it shows a doubly-varied experience", async ({ page }) => {
-        await expect(locateWithinExample(page, "variant 2")).toBeVisible();
+        await expect(locateWithinExample(page, "variant 2")).toBeInViewport();
       });
 
       test("it should activate the second feature with the toggle router", async () => {

@@ -8,7 +8,7 @@ test.describe("varying a component", () => {
   test.describe("when no experiments header set", () => {
     test("it shows a default experience", async ({ page }) => {
       await page.goto(fixtureURL);
-      await expect(locateWithinExample(page, "control 1")).toBeVisible();
+      await expect(locateWithinExample(page, "control 1")).toBeInViewport();
     });
   });
 
@@ -23,7 +23,7 @@ test.describe("varying a component", () => {
     });
 
     test("it shows a varied experience", async ({ page }) => {
-      await expect(locateWithinExample(page, "variant 1")).toBeVisible();
+      await expect(locateWithinExample(page, "variant 1")).toBeInViewport();
     });
 
     test("it should activate the feature with the toggle router", async () => {

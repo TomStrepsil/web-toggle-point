@@ -14,7 +14,7 @@ test.describe("config endpoint", () => {
       });
 
       test("it shows a varied experience", async ({ page }) => {
-        await expect(page.getByText(`I am ${size}`)).toBeVisible();
+        await expect(page.getByText(`I am ${size}`)).toBeInViewport();
       });
 
       scenarios
@@ -25,7 +25,9 @@ test.describe("config endpoint", () => {
               page
             }) => {
               await page.getByRole("button", { name: otherSize }).click();
-              await expect(page.getByText(`I am ${otherSize}`)).toBeVisible();
+              await expect(
+                page.getByText(`I am ${otherSize}`)
+              ).toBeInViewport();
             });
           });
         });

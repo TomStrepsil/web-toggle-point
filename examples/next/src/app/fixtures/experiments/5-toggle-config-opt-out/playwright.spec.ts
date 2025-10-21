@@ -8,7 +8,7 @@ test.describe("preventing toggling of a module using a toggleConfig", () => {
   test.describe("when no experiments header set", () => {
     test("it shows the control module", async ({ page }) => {
       await page.goto(fixtureURL);
-      await expect(locateWithinExample(page, "control 1")).toBeVisible();
+      await expect(locateWithinExample(page, "control 1")).toBeInViewport();
     });
   });
 
@@ -19,7 +19,7 @@ test.describe("preventing toggling of a module using a toggleConfig", () => {
       page
     }) => {
       await page.goto(fixtureURL);
-      await expect(locateWithinExample(page, "control 1")).toBeVisible();
+      await expect(locateWithinExample(page, "control 1")).toBeInViewport();
     });
   });
 });
