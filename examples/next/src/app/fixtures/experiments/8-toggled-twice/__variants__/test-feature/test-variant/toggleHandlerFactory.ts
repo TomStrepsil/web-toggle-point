@@ -10,13 +10,13 @@ interface ToggleHandler {
     featuresMap: Map<string, Map<string, ReactComponentModuleType>>
   ) => React.Component;
   joinPoint: ReactComponentModuleType;
-  variants: __WebpackModuleApi.RequireContext;
+  variantPathMap: Map<string, ReactComponentModuleType>;
 }
-export default ({ togglePoint, joinPoint, variants }: ToggleHandler) => {
+export default ({ togglePoint, joinPoint, variantPathMap }: ToggleHandler) => {
   const variantsMap = new Map<string, ReactComponentModuleType>();
   const featuresMap = new Map([[FEATURE_KEY, variantsMap]]);
 
-  for (const key of variants.keys()) {
+  for (const key of variantPathMap.keys()) {
     const [, , value] = key.split(".");
     const [start, end] = value.split("-");
 
@@ -25,7 +25,7 @@ export default ({ togglePoint, joinPoint, variants }: ToggleHandler) => {
       charCode <= end.charCodeAt(0);
       charCode++
     ) {
-      variantsMap.set(String.fromCharCode(charCode), variants(key));
+      variantsMap.set(String.fromCharCode(charCode), variantPathMap.get(key)!);
     }
   }
 
