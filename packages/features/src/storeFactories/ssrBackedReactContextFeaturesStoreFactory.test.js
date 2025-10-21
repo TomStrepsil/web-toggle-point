@@ -25,15 +25,15 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
 
   beforeEach(() => {
     props = {
-      name: "test-name",
+      toggleType: "test-toggle-type",
       logWarning: Symbol("test-log-warning")
     };
   });
 
   const makeCommonAssertions = () => {
-    it("should call the reactContextStoreFactory with the name", () => {
+    it("should call the reactContextStoreFactory with the toggleType", () => {
       expect(reactContextFeaturesStoreFactory).toHaveBeenCalledWith({
-        name: props.name
+        toggleType: props.toggleType
       });
     });
 
@@ -57,13 +57,13 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
         ).toHaveBeenCalled();
       });
 
-      it("should create an SSR-backed react component that serializes the provided value in a script with a namespace & named id", () => {
+      it("should create an SSR-backed react component that serializes the provided value in a script with a namespace & named id, using the supplied toggleType", () => {
         expect(withJsonIsomorphism).toHaveBeenCalledWith(
           expect.any(Function),
           props.logWarning,
           {
             scriptId: expect.any(String),
-            propName: props.name
+            propName: props.toggleType
           }
         );
       });
@@ -83,7 +83,7 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
         it("should pass the value to the SSR-backed component", () => {
           expect(MockSSRBackedFeaturesProvider).toHaveBeenCalledWith(
             expect.objectContaining({
-              [props.name]: value
+              [props.toggleType]: value
             }),
             expect.anything()
           );
@@ -112,7 +112,7 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
         expect.anything(),
         expect.anything(),
         expect.objectContaining({
-          scriptId: `${props.namespace}_${props.name}`
+          scriptId: `${props.namespace}_${props.toggleType}`
         })
       );
     });
@@ -130,7 +130,7 @@ describe("ssrBackedReactContextFeaturesStoreFactory", () => {
         expect.anything(),
         expect.anything(),
         expect.objectContaining({
-          scriptId: `toggles_${props.name}`
+          scriptId: `toggles_${props.toggleType}`
         })
       );
     });
