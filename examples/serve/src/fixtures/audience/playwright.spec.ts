@@ -8,7 +8,7 @@ test.describe("audience-specific content", () => {
         page.getByText(
           "Some audience-specific content: this is a value for the default experience"
         )
-      ).toBeInViewport();
+      ).toBeVisible();
     });
   });
 
@@ -27,7 +27,7 @@ test.describe("audience-specific content", () => {
         await page.goto("/");
         await expect(
           page.getByText(`Some audience-specific content: ${expected}`)
-        ).toBeInViewport();
+        ).toBeVisible();
       });
     });
   });

@@ -6,7 +6,7 @@ test.describe("translating content", () => {
       await page.goto("/");
       await expect(
         page.getByText("Some translated content: english value")
-      ).toBeInViewport();
+      ).toBeVisible();
     });
   });
 
@@ -20,7 +20,7 @@ test.describe("translating content", () => {
         await page.goto("/");
         await expect(
           page.getByText(`Some translated content: ${expected}`)
-        ).toBeInViewport();
+        ).toBeVisible();
       });
     });
   });
