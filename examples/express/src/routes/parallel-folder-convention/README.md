@@ -9,6 +9,7 @@ An inbound header named "feature" can take the following values:
 - feature2
 - feature3
 - feature4
+- feature5
 
 ...which is used server side (via a ["node request scoped features store"](../../../../../packages/features/docs/README.md#noderequestscopedfeaturesstorefactory)) to generate appropriate server-rendered content.
 
