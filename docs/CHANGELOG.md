@@ -14,13 +14,19 @@ N.B. See changelogs for individual packages, where most change will occur:
 
 This log covers the [monorepo](https://en.wikipedia.org/wiki/Monorepo).
 
+## [0.13.1] - 2025-11-14
+
+### Changed
+
+- Moved to v5 of [`upload-artifact`](https://github.com/actions/upload-artifact) and [`download-artifact`](https://github.com/actions/download-artifact) actions
+- updated `eslint` to 9.38.0
+
 ## [0.13.0] - 2025-10-21
 
 ### Changed
 
 - updated to `0.11.0` of [`eslint-plugin-workspaces`](https://github.com/joshuajaco/eslint-plugin-workspaces) after [addition of ESLint9 support](https://github.com/joshuajaco/eslint-plugin-workspaces/commit/af855c3a3d8069366d4446747e91828ddf7560c6)
   - update `eslint.config.mjs` to utilise flat config
-- updated `eslint` to 9.38.0
 
 ## [0.12.0] - 2025-09-30
 
