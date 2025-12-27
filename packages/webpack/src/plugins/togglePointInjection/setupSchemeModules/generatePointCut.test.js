@@ -24,7 +24,7 @@ describe("generatePointCut", () => {
     });
 
     it("should return a script that imports the pack and unpack exports of the appropriate adapter module, via the namespace, falling back to an identity function if the adapter does not export a pack/unpack handler", () => {
-      // N.B. The pack and unpack functions must be aliased during the import to mitigate https://github.com/webpack/webpack/issues/19518
+      // N.B. The pack and unpack functions must be aliased during the import to mitigate https://github.com/webpack/webpack/issues/19518, which although fixed, is still present in some webpack versions (notably NextJS is stuck on webpack 5.98.0 as of EOY 2025).
       expect(result).toMatch(
         `import * as namespace from "${adapterModuleSpecifier.replaceAll(sep, posix.sep)}";
 const identity = (module) => module;

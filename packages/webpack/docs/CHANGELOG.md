@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - various internal variable renames for clarity
 - wrapped "toggle handlers" in a factory method, to support `togglePoint`, `pack` and `unpack` being passed during setup, simplifying the toggle handler interface
   - move `toggleHandler/pathSegmentToggleHandler` to `toggleHandlerFactories/pathSegment`
+- update [`Webpack`](https://webpack.js.org/) version 5.104.1
+  - update comment in `generatePointCut.test.js` to indicate that despite raised issue being fixed, NextJS is stuck on Webpack [`5.98.0` ](https://github.com/webpack/webpack/tree/v5.98.0) from [13th Feb](https://github.com/webpack/webpack/releases/tag/v5.98.0)
 
 ## [0.9.2] - 2025-11-14
 
