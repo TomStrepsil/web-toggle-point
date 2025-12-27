@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { createRef, forwardRef } from "react";
 import getDisplayName from "../getDisplayName";
 
-const mockLogError = jest.fn();
+const mockOnVariantError = jest.fn();
 
 const mockDisplayName = "test-display-name";
 jest.mock("../getDisplayName", () => jest.fn(() => mockDisplayName));
@@ -47,7 +47,7 @@ describe("withErrorBoundary", () => {
       Boundaried = withErrorBoundary({
         Variant: MockVariant,
         packedBaseModule: MockBaseModule,
-        logError: mockLogError,
+        onVariantError: mockOnVariantError,
         unpackComponent
       });
       render(<Boundaried {...inboundProps} ref={mockRef} />);
@@ -67,8 +67,8 @@ describe("withErrorBoundary", () => {
       expect(screen.queryByTestId(mockBaseModule)).not.toBeInTheDocument();
     });
 
-    it("should not log anything", () => {
-      expect(mockLogError).not.toHaveBeenCalled();
+    it("should not call the onVariantError callback", () => {
+      expect(mockOnVariantError).not.toHaveBeenCalled();
     });
   });
 
@@ -78,7 +78,7 @@ describe("withErrorBoundary", () => {
       const Boundaried = withErrorBoundary({
         Variant: MockErrorVariant,
         packedBaseModule: MockBaseModule,
-        logError: mockLogError,
+        onVariantError: mockOnVariantError,
         unpackComponent
       });
       render(<Boundaried {...inboundProps} ref={mockRef} />);
@@ -106,8 +106,8 @@ describe("withErrorBoundary", () => {
       expect(screen.queryByTestId(mockVariant)).not.toBeInTheDocument();
     });
 
-    it("should log an error indicating that the fallback has been rendered", () => {
-      expect(mockLogError).toHaveBeenCalledWith(mockError);
+    it("should call the onVariantError callback, indicating that the fallback has been rendered", () => {
+      expect(mockOnVariantError).toHaveBeenCalledWith(mockError);
     });
 
     it("should update the message on the error to include that the variant has errored", () => {

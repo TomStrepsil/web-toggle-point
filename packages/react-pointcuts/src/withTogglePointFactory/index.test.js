@@ -2,15 +2,22 @@ import withTogglePointFactory from ".";
 import { render, screen } from "@testing-library/react";
 import useCodeMatches from "../useCodeMatches";
 import getComponent from "./getComponent";
-import getCodeSelectionPlugins from "../getCodeSelectionPlugins";
+import getHooksFromPlugins from "../getHooksFromPlugins";
 import { createRef, forwardRef, lazy } from "react";
 import getDisplayName from "./getDisplayName";
 
 const mockMatches = {};
 jest.mock("../useCodeMatches", () => jest.fn(() => mockMatches));
-const mockCodeSelectionPlugins = Symbol("test-code-selection-plugins");
-jest.mock("../getCodeSelectionPlugins", () =>
-  jest.fn(() => mockCodeSelectionPlugins)
+const mockCodeSelectionPlugins = Symbol("test-plugins");
+const mockVariantErrorPlugins = Symbol("test-plugins");
+jest.mock("../getHooksFromPlugins", () =>
+  jest.fn(
+    (_, type) =>
+      ({
+        onCodeSelected: mockCodeSelectionPlugins,
+        onVariantError: mockVariantErrorPlugins
+      })[type]
+  )
 );
 const mockVariedComponent = "test-component";
 const MockVariedComponent = forwardRef(
@@ -25,7 +32,6 @@ describe("withTogglePointFactory", () => {
   let rerender;
   const featuresMap = Symbol("test-features-map");
   const inboundProps = { "test-prop": Symbol("test-value") };
-  const logError = Symbol("test-log-error");
   const mockPlugins = [Symbol("test-plugin1"), Symbol("test-plugin2")];
   const mockActiveFeatures = Symbol("test-active-features");
   const getActiveFeatures = jest.fn(() => mockActiveFeatures);
@@ -48,7 +54,6 @@ describe("withTogglePointFactory", () => {
           jest.clearAllMocks();
           const withTogglePoint = withTogglePointFactory({
             getActiveFeatures,
-            logError,
             variantKey: inputVariantKey,
             plugins: mockPlugins
           });
@@ -56,7 +61,17 @@ describe("withTogglePointFactory", () => {
         });
 
         it("should get code selection plugins", () => {
-          expect(getCodeSelectionPlugins).toHaveBeenCalledWith(mockPlugins);
+          expect(getHooksFromPlugins).toHaveBeenCalledWith(
+            mockPlugins,
+            "onCodeSelected"
+          );
+        });
+
+        it("should get variant errored plugins", () => {
+          expect(getHooksFromPlugins).toHaveBeenCalledWith(
+            mockPlugins,
+            "onVariantError"
+          );
         });
 
         const makeRenderedAssertions = () => {
@@ -84,10 +99,10 @@ describe("withTogglePointFactory", () => {
             expect(getComponent).toHaveBeenCalledWith({
               matchedFeatures,
               matchedVariant,
-              logError,
               packedBaseModule: joinPoint,
               unpackComponent: expect.any(Function),
-              plugins: mockCodeSelectionPlugins
+              codeSelectionPlugins: mockCodeSelectionPlugins,
+              variantErrorPlugins: mockVariantErrorPlugins
             });
           });
 

@@ -1,8 +1,8 @@
 import { build } from "webpack-test-utils";
 import { readFile } from "fs/promises";
+import { posix } from "path";
 import TogglePointInjection from "./index.js";
 import { PLUGIN_NAME } from "./constants.js";
-import { posix } from "path";
 import staticLoadStrategyFactory from "../../moduleLoadStrategyFactories/staticLoadStrategyFactory";
 
 const loadStrategy = staticLoadStrategyFactory();

@@ -4,7 +4,7 @@ export default [
     togglePointModuleSpecifier:
       "/src/app/fixtures/content-management/withToggledHook",
     variantGlobs: [
-      "./src/app/fixtures/content-management/**/__variants__/*/*/use!(*.spec).ts"
+      "./src/app/fixtures/content-management/__variants__/devMode/active/useContentEditable.ts"
     ]
   }
 ];

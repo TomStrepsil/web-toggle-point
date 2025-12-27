@@ -1,4 +1,5 @@
 import { posix, basename } from "path";
+import webpack from "webpack";
 import deferredRequireLoadStrategyFactory from "../../moduleLoadStrategyFactories/deferredRequireLoadStrategyFactory.js";
 
 const defaultLoadStrategy = deferredRequireLoadStrategyFactory();
@@ -22,8 +23,7 @@ const fillDefaultPointcutValues = (pointCut) => {
 
 const fillDefaultOptionalValues = (options) => {
   return {
-    webpackNormalModule: async () =>
-      (await import("webpack")).default.NormalModule,
+    webpackNormalModule: webpack.NormalModule,
     ...options,
     pointCuts: options.pointCuts.map(fillDefaultPointcutValues)
   };

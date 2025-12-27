@@ -1,12 +1,12 @@
 import getComponent from "./index";
 import withErrorBoundary from "./withErrorBoundary";
-import withPlugins from "./withPlugins";
+import withCodeSelectionPlugins from "./withCodeSelectionPlugins";
 import { render, screen } from "@testing-library/react";
 import { createRef, forwardRef } from "react";
 import getDisplayName from "../getDisplayName";
 
 jest.mock("./withErrorBoundary", () => jest.fn());
-jest.mock("./withPlugins", () => jest.fn());
+jest.mock("./withCodeSelectionPlugins", () => jest.fn());
 const mockDisplayName = "test-display-name";
 jest.mock("../getDisplayName", () => jest.fn(() => mockDisplayName));
 
@@ -28,13 +28,21 @@ describe("getComponent", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     params = {
-      logError: Symbol("test-error-logger"),
       packedBaseModule: () => Symbol("test-base-component"),
-      unpackComponent
+      codeSelectionPlugins: Symbol("test-code-selection-plugins"),
+      unpackComponent,
+      variantErrorPlugins: [
+        {
+          onVariantError: jest.fn(() => {
+            throw "this errors";
+          })
+        },
+        { onVariantError: jest.fn() }
+      ]
     };
-    withPlugins.mockImplementation(({ component }) => {
-      component[pluginMarker] = true;
-      return component;
+    withCodeSelectionPlugins.mockImplementation(({ Component }) => {
+      Component[pluginMarker] = true;
+      return Component;
     });
   });
 
@@ -68,6 +76,7 @@ describe("getComponent", () => {
           ...params,
           matchedFeatures
         };
+        result = getComponent(params);
       });
 
       describe("and there is no matched variant", () => {
@@ -110,7 +119,7 @@ describe("getComponent", () => {
         it("should wrap the variant with an error boundary, to ensure errors in the variant result in falling back to the base/default component", () => {
           const { packedBaseModule: Component } = params;
           expect(withErrorBoundary).toHaveBeenCalledWith({
-            logError: params.logError,
+            onVariantError: expect.any(Function),
             Variant: expect.anything(),
             packedBaseModule: Component,
             unpackComponent
@@ -155,6 +164,28 @@ describe("getComponent", () => {
             );
           });
         });
+
+        describe("when the variant throws an error, thus the error boundary calls the supplied onVariantError method", () => {
+          const mockError = Symbol("test-error");
+          const syncMethod = jest.fn();
+
+          beforeEach(() => {
+            const [[{ onVariantError }]] = withErrorBoundary.mock.calls;
+            onVariantError(mockError);
+            syncMethod();
+          });
+
+          it("should call the onVariantError callbacks with the error, with the callbacks not holding up execution of the main thread and errors thrown not affecting subsequent callbacks", () => {
+            const [
+              { onVariantError: plugin1Callback },
+              { onVariantError: plugin2Callback }
+            ] = params.variantErrorPlugins;
+            expect(plugin1Callback).toHaveBeenCalledWith(mockError);
+            expect(plugin2Callback).toHaveBeenCalledWith(mockError);
+            expect(syncMethod).toHaveBeenCalledBefore(plugin1Callback);
+            expect(syncMethod).toHaveBeenCalledBefore(plugin2Callback);
+          });
+        });
       });
     });
   };
@@ -163,16 +194,16 @@ describe("getComponent", () => {
     beforeEach(() => {
       params = {
         ...params,
-        plugins: Symbol("test-plugins")
+        codeSelectionPlugins: Symbol("test-plugins")
       };
     });
 
     makeCommonAssertions(() => {
       it("should run plugins on the the matched features, passing the params that were passed to the component, in-case the plugins need them", () => {
-        const { plugins, ...rest } = params;
-        expect(withPlugins).toHaveBeenCalledWith({
-          component: result,
-          plugins,
+        const { codeSelectionPlugins, ...rest } = params;
+        expect(withCodeSelectionPlugins).toHaveBeenCalledWith({
+          Component: result,
+          codeSelectionPlugins,
           ...rest
         });
         expect(result[pluginMarker]).toBe(true);
@@ -184,7 +215,7 @@ describe("getComponent", () => {
     beforeEach(() => {
       params = {
         ...params,
-        plugins: null
+        codeSelectionPlugins: null
       };
     });
 

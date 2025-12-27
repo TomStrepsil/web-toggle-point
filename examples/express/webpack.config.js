@@ -5,22 +5,25 @@ import { TogglePointInjectionPlugin } from "@asos/web-toggle-point-webpack/plugi
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import staticLoadStrategyFactory from "@asos/web-toggle-point-webpack/moduleLoadStrategyFactories/staticLoadStrategyFactory";
 import lazyComponentLoadStrategyFactory from "@asos/web-toggle-point-react-pointcuts/lazyComponentLoadStrategyFactory";
+import parallelFolderConventionPointCutConfig from "./src/routes/parallel-folder-convention/toggle-plumbing/pointCutConfig.js";
+import { EnhancedTsconfigWebpackPlugin } from "enhanced-tsconfig-paths-webpack-plugin";
+import webpack from "webpack";
 
 const configPointCutConfig = {
   name: "configuration variants",
   variantGlobs: ["./src/routes/config/__variants__/*/*/*.jsx"],
   togglePointModuleSpecifier: "/src/routes/config/togglePoint.js",
-  loadStrategy: lazyComponentLoadStrategyFactory(),
+  loadStrategy: lazyComponentLoadStrategyFactory()
 };
 
 const common = {
   mode: "production",
   devtool: "source-map",
   experiments: {
-    outputModule: true,
+    outputModule: true
   },
   output: {
-    module: true,
+    module: true
   },
   module: {
     rules: [
@@ -28,16 +31,45 @@ const common = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
-        },
+          loader: "babel-loader"
+        }
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                namedExport: false
+              }
+            }
+          }
+        ]
       },
-    ],
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/
+      },
+      {
+        test: /\.js$/,
+        enforce: "pre",
+        use: ["source-map-loader"]
+      }
+    ]
   },
-  plugins: [new MiniCssExtractPlugin()],
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+    plugins: [
+      new EnhancedTsconfigWebpackPlugin({
+        tsconfigPaths: {
+          extensions: [".ts", ".tsx", ".css"]
+        }
+      })
+    ]
+  }
 };
 
 const config = [
@@ -49,18 +81,22 @@ const config = [
       ...common.output,
       path: resolve(dirname(fileURLToPath(import.meta.url)), "bin"),
       filename: "server.mjs",
-      clean: true,
+      clean: true
     },
     externals: [externals({ importType: "module" })],
     plugins: [
-      ...common.plugins,
+      new webpack.DefinePlugin({
+        CLIENT: false
+      }),
+      new MiniCssExtractPlugin(),
       new TogglePointInjectionPlugin({
         pointCuts: [
           configPointCutConfig,
+          ...parallelFolderConventionPointCutConfig,
           {
             name: "animal apis by version",
             variantGlobs: [
-              "./src/routes/animals/api/**/v{1..9}*([[:digit:]])/*.js",
+              "./src/routes/animals/api/**/v{1..9}*([[:digit:]])/*.js"
             ],
             joinPointResolver: (variantPath) =>
               posix.resolve(
@@ -69,11 +105,11 @@ const config = [
                 basename(variantPath)
               ),
             togglePointModuleSpecifier: "/src/routes/animals/togglePoint.js",
-            loadStrategy: staticLoadStrategyFactory(),
-          },
-        ],
-      }),
-    ],
+            loadStrategy: staticLoadStrategyFactory()
+          }
+        ]
+      })
+    ]
   },
   {
     entry: "./src/routes/config/client.js",
@@ -82,11 +118,11 @@ const config = [
     output: {
       ...common.output,
       path: resolve(dirname(fileURLToPath(import.meta.url)), "public"),
-      filename: "main.mjs",
+      filename: "main.mjs"
     },
     plugins: [
-      ...common.plugins,
-      new TogglePointInjectionPlugin({ pointCuts: [configPointCutConfig] }),
+      new MiniCssExtractPlugin(),
+      new TogglePointInjectionPlugin({ pointCuts: [configPointCutConfig] })
     ],
     module: {
       ...common.module,
@@ -94,12 +130,33 @@ const config = [
         {
           test: /\.js$/,
           enforce: "pre",
-          use: ["source-map-loader"],
+          use: ["source-map-loader"]
         },
-        ...common.module.rules,
-      ],
+        ...common.module.rules
+      ]
     },
+    ...common
   },
+  {
+    entry: "./src/routes/parallel-folder-convention/client.js",
+    target: "web",
+    output: {
+      path: resolve(dirname(fileURLToPath(import.meta.url)), "public"),
+      filename: "parallel-folder-convention.js"
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        CLIENT: true
+      }),
+      new MiniCssExtractPlugin({
+        filename: "parallel-folder-convention.css"
+      }),
+      new TogglePointInjectionPlugin({
+        pointCuts: parallelFolderConventionPointCutConfig
+      })
+    ],
+    ...common
+  }
 ];
 
 export default config;

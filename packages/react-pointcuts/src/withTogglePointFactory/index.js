@@ -1,7 +1,7 @@
 import { useMemo, forwardRef, Suspense, Fragment } from "react";
 import getComponent from "./getComponent";
 import useCodeMatches from "../useCodeMatches";
-import getCodeSelectionPlugins from "../getCodeSelectionPlugins";
+import getHooksFromPlugins from "../getHooksFromPlugins";
 import { useDeferredValue } from "./useDeferredValueWhereAvailable";
 import getDisplayName from "./getDisplayName";
 import { isLazy, isValidElementType } from "react-is";
@@ -21,8 +21,9 @@ const isModuleLazyComponent = (Module) =>
  * @see {@link https://reactjs.org/docs/hooks-overview.html|React.Hook}
  */
 
-// eslint-disable-next-line prettier/prettier, no-empty -- https://github.com/babel/babel/issues/15156
-{}
+// eslint-disable-next-line no-empty -- https://github.com/babel/babel/issues/15156
+{
+}
 /**
  * A factory function used to create a withTogglePoint React Higher-Order-Component.
  * @memberof module:web-toggle-point-react-pointcuts
@@ -39,18 +40,25 @@ const isModuleLazyComponent = (Module) =>
  * @example
  * const withTogglePoint = withTogglePointFactory({
  *   getActiveFeatures,
- *   plugins: [plugin1, plugin2, plugin3],
- *   logError: (error) => window.NREUM?.noticeError(error)
+ *   plugins: [
+ *     somePlugin,
+ *     {
+ *       onCodeSelected: ({ matchedFeatures }) => { console.log("matched: " + JSON.stringify(matchedFeatures)) }); },
+ *     },
+ *     {
+ *       onVariantError: console.error
+ *     }
+ *   ]
  * });
  * export default withTogglePoint(MyReactComponent);
  */
 const withTogglePointFactory = ({
   getActiveFeatures,
-  logError,
   variantKey = "bucket",
   plugins
 }) => {
-  const codeSelectionPlugins = getCodeSelectionPlugins(plugins);
+  const codeSelectionPlugins = getHooksFromPlugins(plugins, "onCodeSelected");
+  const variantErrorPlugins = getHooksFromPlugins(plugins, "onVariantError");
 
   /**
    * A React Higher-Order-Component that wraps a base / control component and swaps in a variant based on the active features supplied
@@ -90,10 +98,10 @@ const withTogglePointFactory = ({
           getComponent({
             matchedFeatures,
             matchedVariant,
-            logError,
             packedBaseModule,
             unpackComponent,
-            plugins: codeSelectionPlugins
+            codeSelectionPlugins,
+            variantErrorPlugins
           }),
         [matchedFeatures, matchedVariant]
       );

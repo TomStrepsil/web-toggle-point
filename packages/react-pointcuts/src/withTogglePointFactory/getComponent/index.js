@@ -1,4 +1,4 @@
-import withPlugins from "./withPlugins";
+import withCodeSelectionPlugins from "./withCodeSelectionPlugins";
 import withErrorBoundary from "./withErrorBoundary";
 import { forwardRef } from "react";
 import getDisplayName from "../getDisplayName";
@@ -6,7 +6,7 @@ import getDisplayName from "../getDisplayName";
 const getControlOrVariant = ({
   matchedFeatures,
   matchedVariant,
-  logError,
+  onVariantError,
   packedBaseModule,
   unpackComponent
 }) => {
@@ -23,7 +23,7 @@ const getControlOrVariant = ({
 
   const component = withErrorBoundary({
     Variant,
-    logError,
+    onVariantError,
     packedBaseModule,
     unpackComponent
   });
@@ -32,18 +32,28 @@ const getControlOrVariant = ({
 };
 
 const getComponent = (params) => {
-  let component = getControlOrVariant(params);
+  const onVariantError = (error) => {
+    params.variantErrorPlugins.forEach(({ onVariantError }) => {
+      Promise.resolve().then(() => {
+        try {
+          onVariantError(error);
+        } catch {} // eslint-disable-line no-empty
+      });
+    });
+  };
 
-  const { plugins, ...rest } = params;
-  if (plugins) {
-    component = withPlugins({
-      component,
-      plugins,
+  let Component = getControlOrVariant({ ...params, onVariantError });
+
+  const { codeSelectionPlugins, ...rest } = params;
+  if (codeSelectionPlugins) {
+    Component = withCodeSelectionPlugins({
+      Component,
+      codeSelectionPlugins,
       ...rest
     });
   }
 
-  return component;
+  return Component;
 };
 
 export default getComponent;

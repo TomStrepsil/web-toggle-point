@@ -1,0 +1,138 @@
+import { withJsonIsomorphism } from "@asos/web-toggle-point-ssr";
+import { render, screen } from "@testing-library/react";
+import reactContextFeaturesStoreFactory from "./reactContextFeaturesStoreFactory";
+import ssrBackedReactContextFeaturesStoreFactory from "./ssrBackedReactContextFeaturesStoreFactory";
+
+const MockSSRBackedFeaturesProvider = jest.fn(({ children }) => (
+  <div data-testid="test-ssr-backed-features-provider">{children}</div>
+));
+jest.mock("@asos/web-toggle-point-ssr", () => ({
+  withJsonIsomorphism: jest.fn(() => MockSSRBackedFeaturesProvider)
+}));
+const mockOtherStuff = {
+  [Symbol("rest")]: Symbol("rest")
+};
+const mockReactContextFeaturesStoreFactory = {
+  providerFactory: jest.fn(),
+  ...mockOtherStuff
+};
+jest.mock("./reactContextFeaturesStoreFactory", () =>
+  jest.fn(() => mockReactContextFeaturesStoreFactory)
+);
+
+describe("ssrBackedReactContextFeaturesStoreFactory", () => {
+  let props, result;
+
+  beforeEach(() => {
+    props = {
+      toggleType: "test-toggle-type",
+      logWarning: Symbol("test-log-warning")
+    };
+  });
+
+  const makeCommonAssertions = () => {
+    it("should call the reactContextStoreFactory with the toggleType", () => {
+      expect(reactContextFeaturesStoreFactory).toHaveBeenCalledWith({
+        toggleType: props.toggleType
+      });
+    });
+
+    it("should return an object with a providerFactory method and whatever else the reactContextStoreFactory returns", () => {
+      expect(result).toEqual({
+        providerFactory: expect.any(Function),
+        ...mockOtherStuff
+      });
+    });
+
+    describe("when calling the providerFactory method", () => {
+      let Provider;
+
+      beforeEach(() => {
+        Provider = result.providerFactory();
+      });
+
+      it("should create a reactContextStore via the reactContextStoreFactory", () => {
+        expect(
+          mockReactContextFeaturesStoreFactory.providerFactory
+        ).toHaveBeenCalled();
+      });
+
+      it("should create an SSR-backed react component that serializes the provided value in a script with a namespace & named id, using the supplied toggleType", () => {
+        expect(withJsonIsomorphism).toHaveBeenCalledWith(
+          expect.any(Function),
+          props.logWarning,
+          {
+            scriptId: expect.any(String),
+            propName: props.toggleType
+          }
+        );
+      });
+
+      describe("when rendering the returned component", () => {
+        const value = Symbol("test-value");
+        const mockChild = "test-child";
+        const MockChild = () => <div data-testid={mockChild} />;
+        beforeEach(() => {
+          render(
+            <Provider value={value}>
+              <MockChild />
+            </Provider>
+          );
+        });
+
+        it("should pass the value to the SSR-backed component", () => {
+          expect(MockSSRBackedFeaturesProvider).toHaveBeenCalledWith(
+            expect.objectContaining({
+              [props.toggleType]: value
+            }),
+            expect.anything()
+          );
+        });
+
+        it("should render the children", () => {
+          expect(screen.getByTestId(mockChild)).toBeInTheDocument();
+        });
+      });
+    });
+  };
+
+  describe("when a namespace is supplied", () => {
+    beforeEach(() => {
+      props = {
+        ...props,
+        namespace: "test-namespace"
+      };
+      result = ssrBackedReactContextFeaturesStoreFactory(props);
+    });
+
+    makeCommonAssertions();
+
+    it("should create the ssr-backed component with a namespaced script id", () => {
+      expect(withJsonIsomorphism).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.objectContaining({
+          scriptId: `${props.namespace}_${props.toggleType}`
+        })
+      );
+    });
+  });
+
+  describe("when a namespace is not supplied", () => {
+    beforeEach(() => {
+      result = ssrBackedReactContextFeaturesStoreFactory(props);
+    });
+
+    makeCommonAssertions();
+
+    it("should create the ssr-backed component with a default namespaced script id", () => {
+      expect(withJsonIsomorphism).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.objectContaining({
+          scriptId: `toggles_${props.toggleType}`
+        })
+      );
+    });
+  });
+});

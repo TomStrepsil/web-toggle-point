@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.0] - 2025-07-17
+## [0.10.0] - ????-??-??
 
 ### Added
 
@@ -18,19 +18,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - renamed `TogglePointInjection` to `TogglePointInjectionPlugin` to follow Webpack recommended naming convention
 - renamed `togglePointModule` to `togglePointModuleSpecifier` to better describe [the type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#importing_features_into_your_script)
 - updated webpack version to 5.99.7
-- consolidated setting of default optional values
-- changed `variants` array on join point data structure to a `Map` of relative to absolute path as `variantPathMap`
-- move away from webpack `import.meta.webpackContext` when generating join points, expect load strategies to construct context/maps instead
-  - add linking of join points, to supplant the functionality previously provided by `import.meta.webpackContext`
 - various internal variable renames for clarity
 - wrapped "toggle handlers" in a factory method, to support `togglePoint`, `pack` and `unpack` being passed during setup, simplifying the toggle handler interface
   - move `toggleHandler/pathSegmentToggleHandler` to `toggleHandlerFactories/pathSegment`
+
+## [0.9.2] - 2025-11-14
+
+### Fixed
+
+- updated the documentation to align with move to `variantPathMap`, missed in [version 0.9.0](#090---2025-10-21)
+
+## [0.9.1] - 2025-10-21
+
+### Fixed
+
+- convert deprecated `unstable_config_lookup_from_file` eslint flag to `v10_config_lookup_from_file` now that [its stable](https://eslint.org/docs/latest/flags/#active-flags) awaiting next major version
+
+## [0.9.0] - 2025-10-21
+
+### Changed
+
+- consolidated setting of default optional values
+- changed `variants` array on join point data structure to a `Map` of relative to absolute path as `variantPathMap`
+- move away from webpack `import.meta.webpackContext` when generating join points, construct a `Map` manually instead
+  - add linking of join points, to supplant the functionality previously provided by `import.meta.webpackContext`
 - updated win32 path replacement, can effectively no-op on posix systems
 
 ### Fixed
 
 - removed "next" peer dependency, this needn't be explicit
 - ensured files that cannot be resolved (by [enhanced-resolve](https://github.com/webpack/enhanced-resolve/)), for whatever reason, don't break the build
+- don't try and filter potential resolutions, let enhanced-resolve try and potentially fail, to allow for resolve plugins to have irregular specifiers (e.g. path alias')
+- ensured that circular dependencies don't cause the module graph search lock up
+- correct README.md to show `toggleHandler` as an option of the `pointCut`, not the general plugin configuration
+
+## [0.8.3] - 2025-09-30
+
+### Fixed
+
+- Used the `prepare-publish.mjs` script provided by repo root version [0.12.0](../../../docs/CHANGELOG.md#0120---2025-09-30) to fix relative links in `README.md` on [npmjs.com](https://www.npmjs.com/) that were moved as part of [0.8.1](#081---2025-07-14)
+
+## [0.8.2] - 2025-09-29
+
+### Fixed
+
+- No need for the `webpackNormalModule` parameter to be an async function, just needed to get static imports correct
+
+## [0.8.1] - 2025-07-14
+
+### Fixed
+
+- ensured that `README.md` is included in the root of the npm package, to conform to [npmjs.org requirement](https://docs.npmjs.com/about-package-readme-files):
+> An npm package `README.md` file **must** be in the root-level directory of the package.
+- ensured that `LICENSE` is included in the npm package
+
+### Added
+
+- [keywords](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#keywords) added to the `package.json` to aid npm search
 
 ## [0.8.0] - 2025-05-27
 

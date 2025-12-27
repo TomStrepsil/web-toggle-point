@@ -30,6 +30,7 @@ const getCommon = ({ config_isClient }) => ({
 });
 
 export default (args) => {
+  const isClient = JSON.parse(args.config_isClient);
   const common = getCommon(args);
   return [
     {
@@ -38,7 +39,7 @@ export default (args) => {
         dir: "lib/",
         exports: "named",
         format: "es",
-        entryFileNames: "[name].js",
+        entryFileNames: `[name]${isClient ? ".browser" : ""}.js`,
         sourcemap: true
       }
     },
@@ -48,7 +49,7 @@ export default (args) => {
         dir: "lib/",
         exports: "named",
         format: "cjs",
-        entryFileNames: "[name].es5.cjs",
+        entryFileNames: `[name]${isClient ? ".browser" : ""}.es5.cjs`,
         sourcemap: true
       },
       plugins: [

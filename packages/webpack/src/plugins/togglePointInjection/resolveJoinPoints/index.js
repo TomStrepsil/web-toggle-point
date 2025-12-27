@@ -1,11 +1,8 @@
 import { PLUGIN_NAME } from "../constants";
-import { posix, sep } from "path";
+import { sep, posix } from "path";
 import { promisify } from "util";
 import handleJoinPointMatch from "./handleJoinPointMatch";
 const { relative } = posix;
-
-const isLoaderlessFileRequest = (request) =>
-  [".", "/"].includes(request.at(0)) && !request.includes("!");
 
 const matchJoinPointIfResolved = async ({
   enhancedResolve,
@@ -14,12 +11,18 @@ const matchJoinPointIfResolved = async ({
   joinPointFiles,
   compilation
 }) => {
-  const resolved = await enhancedResolve(
-    {},
-    resolveData.context,
-    resolveData.request,
-    {}
-  );
+  let resolved;
+  try {
+    resolved = await enhancedResolve(
+      {},
+      resolveData.context,
+      resolveData.request,
+      {}
+    );
+  } catch {
+    return;
+  }
+
   if (!resolved) {
     return;
   }
@@ -50,8 +53,7 @@ const resolveJoinPoints = ({
     async (resolveData) => {
       if (
         !joinPointFiles.size ||
-        !resolveData.context.replaceAll(sep, posix.sep).startsWith(appRoot) ||
-        !isLoaderlessFileRequest(resolveData.request)
+        !resolveData.context.replaceAll(sep, posix.sep).startsWith(appRoot)
       ) {
         return;
       }

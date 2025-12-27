@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.0] - 2025-05-17
+## [0.5.0] - ????-??-??
 
 ### Changed
 
@@ -19,15 +19,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - updated to use [`output.module`](https://webpack.js.org/configuration/output/#outputmodule), to help demonstrate this compatibility
   - updated [`webpack-node-externals`](https://www.npmjs.com/package/webpack-node-externals) to use `module` [`importType`](https://www.npmjs.com/package/webpack-node-externals#optionsimporttype-commonjs)
 
+## [0.4.0] - 2025-10-21
+
+### Changed
+
+- added "parallel folder convention" example
+
+### Fixed
+
+- went ltd cmdr data on the contraction "I'm", converting to "I am" since the "large" example inexplicably no longer text-matched (space before apostrophe)
+
+## [0.3.1] - 2025-10-21
+
 ### Fixed
 
 - removed "Vary" header from "animals" example, the page is meant to be un-cacheable, and the value was wrong in any case
+
+## [0.3.0] - 2025-10-20
+
+### Changed
+
+- updated to features [version 0.5.0](../../../packages/features/docs/CHANGELOG.md#050---2025-10-20)
+
+## [0.2.7] - 2025-09-30
+
+### Changed
+
+- move to use new `onVariantError` plugin hook over `logError` to consume [0.5.0](../../../packages/react-pointcuts/docs/CHANGELOG.md#040---2025-07-06) of `react-pointcuts` package.
+
+## [0.2.6] - 2025-07-15
+
+### Changed
+
+- Updated to named exports version of "features" package ([0.4.0](../../../packages/features/docs/CHANGELOG.md#040---2025-07-15))
+
+### Fixed
+
+- import types explicitly from `@playwright/test` after unexpected pipeline failure
 
 ## [0.2.5] - 2025-05-27
 
 ### Changed
 
-- updated to use `variantGlobs` array, with updated webpack plugin [0.8.0][version 0.8.0](../../../packages/webpack/docs/CHANGELOG.md#080---2025-05-27)
+- updated to use `variantGlobs` array, with updated webpack plugin [version 0.8.0](../../../packages/webpack/docs/CHANGELOG.md#080---2025-05-27)
 - used some differing syntax from [`micromatch`](https://github.com/micromatch/micromatch) to define `variantGlobs`, for coverage and where may be preferred
 
 ## [0.2.4] - 2024-02-07

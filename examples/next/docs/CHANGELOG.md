@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.3.0] - 2025-07-17
+## [0.4.1] - 2025-10-21
+
+### Changed
+
+- update to take supply static `webpackNormalModule` corresponding to webpack plugin [version 0.9.0](../../../packages/webpack/docs/CHANGELOG.md#090---2025-07-29)
+- update [`Next.js`](https://nextjs.org/) to version 15.5.6
+- update [`@playwright/test`](https://github.com/microsoft/playwright/tree/main/packages/playwright-test) to 1.56.0
+
+### Fixed
+
+- remove note regarding [issue #50](https://github.com/ASOS/web-toggle-point/issues/50) after release of features [version 0.5.0](../../../packages/features/docs/CHANGELOG.md#050---2025-10-20)
+
+## [0.4.0] - 2025-10-20
+
+### Changed
+
+- updated to features [version 0.5.0](../../../packages/features/docs/CHANGELOG.md#050---2025-10-20)
+
+## [0.3.1] - 2025-09-30
+
+### Changed
+
+- move to use new `onVariantError` plugin hook over `logError` to consume [0.5.0](../../../packages/react-pointcuts/docs/CHANGELOG.md#040---2025-07-06) of `react-pointcuts` package.
+
+## [0.3.0] - 2025-09-29
 
 ### Added
 
@@ -18,23 +43,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - new "content management" example utilising the default `deferredRequireLoadStrategyFactory` of `webpack` package
 - colocate documentation for "experiments" example to sit with its own `README.mdx`
 - updated documentation to indicate incompatibility of Next 14 (and presumed below) with the default `deferredRequireLoadStrategyFactory`
+- colocate documentation for "experiments" example to sit with its own `README.mdx`
+- update to static `webpackNormalModule` option of webpack package [version 0.8.1](../../../packages/webpack/docs/CHANGELOG.md#081---2025-07-27)
+- Updated to named exports version of "features" package ([0.4.0](../../../packages/features/docs/CHANGELOG.md#040---2025-07-15))
 
 ### Fixed
 
 - consistent "Explanation" and "Activation" sections in example `README.mdx` files
 - removed errant `toggle-point.d.ts` in `tsconfig.json`
+- moved type packages to devDependencies
+
+## [0.2.5] - 2025-07-15
+
+### Changed
+
+- Updated to named exports version of "features" package ([0.4.0](../../../packages/features/docs/CHANGELOG.md#040---2025-07-15))
+
+### Fixed
+
+- import types explicitly from `@playwright/test` & internally, after unexpected pipeline failure
 
 ## [0.2.4] - 2025-05-27
 
 ### Changed
 
-- updated to use `variantGlobs` array, with updated webpack plugin [0.8.0][version 0.8.0](../../../packages/webpack/docs/CHANGELOG.md#080---2025-05-27)
+- updated to use `variantGlobs` array, with updated webpack plugin [version 0.8.0](../../../packages/webpack/docs/CHANGELOG.md#080---2025-05-27)
 
 ## [0.2.3] - 2025-02-07
 
 ### Fixed
 
-- fixed a regression in the ability to use `?showExperiments` query in the experiments fixtures, regressed in version `0.2.0`.
+- fixed a regression in the ability to use `?showExperiments` query in the experiments fixtures, regressed in [version 0.2.0](#020---2024-12-06).
 
 ## [0.2.2] - 2024-12-24
 

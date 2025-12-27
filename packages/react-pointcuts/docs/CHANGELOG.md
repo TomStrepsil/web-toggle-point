@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.5.0] - 2025-07-17
+## [0.6.0] - ????-??-??
 
 ### Added
 
@@ -24,9 +24,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - updated the interface of `withTogglePoint` to de-structure an object, rather than have multiple parameters, aligning with change to the Webpack Plugin, made to support toggle points that only care about a `featuresMap`, or perhaps aligned to a load strategy that does not need `pack` and/or `unpack`. This also aligns with ASOS Codebase Convention PC14
 - clarified the features store structure that the toggle points are compatible with
 
+## [0.5.1] - 2025-11-14
+
 ### Fixed
 
-- support the `variantKey` parameter for `withToggledHookFactory`, as already existed for `withTogglePointFactory`
+- convert deprecated `unstable_config_lookup_from_file` eslint flag to `v10_config_lookup_from_file` now that [its stable](https://eslint.org/docs/latest/flags/#active-flags) awaiting next major version
+- reverted errant linebreak
+
+## [0.5.0] - 2025-09-30
+
+### Changed
+
+- Removed `logError` parameter of the `withTogglePointFactory`, replacing with calling of `onVariantError` hook of supplied plugins
+
+### Fixed
+
+- Used the `prepare-publish.mjs` script provided by repo root version [0.12.0](../../../docs/CHANGELOG.md#0120---2025-09-30) to fix relative links in `README.md` on [npmjs.com](https://www.npmjs.com/) that were moved as part of [0.4.7](#047---2025-09-29)
+
+## [0.4.8] - 2025-09-29
+
+### Fixed
+
+- support the `variantKey` parameter for `withToggledHookFactory`, as already existed for `withTogglePointFactory`, which was updated in [version 0.4.0](#040---2024-12-06), but failed to spot this broke the hook version
+
+## [0.4.7] - 2025-09-29
+
+### Fixed
+
+- ensured that `README.md` is included in the root of the npm package, to conform to [npmjs.org requirement](https://docs.npmjs.com/about-package-readme-files):
+> An npm package `README.md` file **must** be in the root-level directory of the package.
+- ensured that `LICENSE` is included in the npm package
+
+### Added
+
+- [keywords](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#keywords) added to the `package.json` to aid npm search
+
+## [0.4.6] - 2025-08-21
+
+### Fixed
+
+- moved to `default` and `browser` exports from `node` and `default`, to support typescript module resolution
 
 ## [0.4.5] - 2025-07-14
 

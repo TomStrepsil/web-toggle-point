@@ -32,7 +32,7 @@ Different code paths may have different toggling needs, and may want a toggle po
 The plugin constructor takes `TogglePointInjectionOptions` thus:
 
 ```typescript
-import { NormalModule } from 'webpack';
+import webpack from 'webpack';
 
 interface LoadStrategy {
   adapterModuleSpecifier: string,
@@ -50,7 +50,7 @@ interface PointCut {
 
 interface TogglePointInjectionOptions {
   pointCuts: PointCut[];
-  webpackNormalModule?: () => typeof NormalModule;
+  webpackNormalModule?: typeof webpack.NormalModule;
 }
 ```
 
@@ -102,6 +102,12 @@ If not supplied, a default `glob` of `/**/__variants__/*/*/!(*.test).{js,jsx,ts,
 [^2]: This is done for efficiency, since the assumption is that a small proportion of modules are variations, so the plugin just seeks these out at the start of the compilation, then identifies suitable candidates for base/default module based on them.
 
 [^3]: The double underscore aligns with a convention from jest (that used `__mocks__`) and supports natively opting-out of the filesystem conventions used by popular filesystem routing frameworks [Next.js](https://nextjs.org/) and [Remix](https://remix.run/) (rollup/vite version of this plugin to be made available in [Issue #7](https://github.com/ASOS/web-toggle-point/issues/7))
+
+#### _`toggleHandler`_
+
+This module unpicks a `variantPathMap` (a [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of full paths to [module namespace objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import#module_namespace_object)) produced by enacting the configured `variantGlobs` and converts it into a form suitable for the configured `togglePoint`.
+
+If not supplied, a default handler (`@asos/web-toggle-point-webpack/pathSegmentToggleHandler`) is used, compatible with the default `variantGlobs`, that converts the matched paths into a tree data structure held in a `Map`, with each path segment as a node in the tree, and the variant modules as the leaf nodes.
 
 #### _`joinPointResolver`_
 
@@ -163,10 +169,14 @@ The module specifier will usually be the file path of the `loadStrategy` itself,
 
 #### _`webpackNormalModule`_
 
-If using [`Next.js`](https://nextjs.org/), an additional configuration parameter is needed, to inject the WebPack `NormalModule`, since the plugin is reliant on its hooks, and Next.js pre-compiles and packages Webpack, rather than referencing it as a normal package dependency.  This can be specified thus (ESM):
+If using [`Next.js`](https://nextjs.org/), an additional configuration parameter is needed, to inject the Webpack `NormalModule`, since the plugin is reliant on its hooks, and Next.js pre-compiles and packages Webpack, rather than referencing it as a normal package dependency.  This can be specified thus (ESM):
 
 ```js
-const webpackNormalModule = async () => (await import("next/dist/compiled/webpack/NormalModule.js")).default
+import webpackNormalModule from "next/dist/compiled/webpack/NormalModule.js";
+const plugin = new TogglePointInjection({
+  pointCuts,
+  webpackNormalModule
+});
 ```
 
 ### How it Works
@@ -204,9 +214,9 @@ const plugin = new TogglePointInjectionPlugin({
 
 ...the plugin inject a proxy module with the id `toggle:/join-points:/src/modules/myModule.js` into the compilation, to which all requests for `/src/modules/myModule.js` will be redirected.[^4]
 
-That proxy module will, in turn, import a module with id `toggle:/point-cuts:/my point cut`, and pass it the original module for `/src/modules/myModule.js` as a `joinPoint` argument, plus all the possible variation modules (`./feature1/variant1/myModule.js`, `./feature2/variant1/myModule.js`, `./feature2/variant2/myModule.js`) in `Map`, with the modules "packed" in accordance with the load strategy.
+That proxy module will, in turn, import a module with id `toggle:/point-cuts:/my point cut`, and pass it the original module for `/src/modules/myModule.js` as a `pointCut` argument, plus all the possible variation modules (`./feature1/variant1/myModule.js`, `./feature2/variant1/myModule.js`, `./feature2/variant2/myModule.js`) in a [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) linking the full paths to the corresponding [module namespace objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import#module_namespace_object).
 
-The `toggle:/point-cuts:/my point cut` imports the configured toggle point, and toggle handler factory (either a configured one, or the default).
+The `toggle:/point-cuts:/my point cut` then imports the configured toggle point (and toggle handler, if configured), then calls the handler with the toggle point, join point module, and variants. The handler is expected to convert the key/value `Map` of variants into a data structure appropriate for the toggle point (the default being a `Map` keyed by feature, then variant, to variant module).
 
 It constructs a toggle handler, having passed it the toggle point and the `pack` and `unpack` methods of the load strategy (or [https://en.wikipedia.org/wiki/Identity_function](identity functions), if not configured).
 

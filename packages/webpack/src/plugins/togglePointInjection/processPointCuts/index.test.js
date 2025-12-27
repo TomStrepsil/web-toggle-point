@@ -2,9 +2,9 @@ import processPointCuts from "./index.js";
 import processVariantFiles from "./processVariantFiles/index.js";
 import getVariantPaths from "./getVariantPaths.js";
 
-jest.mock("./processVariantFiles/index.js", () => jest.fn());
-jest.mock("./getVariantPaths.js", () =>
-  jest.fn(() => Symbol("test-variant-paths"))
+jest.mock("./processVariantFiles/index", () => jest.fn());
+jest.mock("./getVariantPaths", () =>
+  jest.fn(() => Symbol("test-variant-files"))
 );
 
 describe("processPointCuts", () => {

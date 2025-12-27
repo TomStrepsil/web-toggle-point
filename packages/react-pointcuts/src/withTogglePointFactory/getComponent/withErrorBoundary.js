@@ -6,7 +6,7 @@ const ForwardedRefContext = createContext();
 const withErrorBoundary = ({
   Variant,
   packedBaseModule,
-  logError,
+  onVariantError,
   unpackComponent
 }) => {
   class TogglePointErrorBoundary extends Component {
@@ -21,7 +21,7 @@ const withErrorBoundary = ({
 
     componentDidCatch(error) {
       error.message = `Variant errored, rendering fallback: ${error.message}`;
-      logError(error);
+      onVariantError(error);
     }
 
     static contextType = ForwardedRefContext;
