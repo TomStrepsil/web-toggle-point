@@ -9,6 +9,8 @@ import parallelFolderConventionPointCutConfig from "./src/routes/parallel-folder
 import { EnhancedTsconfigWebpackPlugin } from "enhanced-tsconfig-paths-webpack-plugin";
 import webpack from "webpack";
 
+const publicPath = resolve(dirname(fileURLToPath(import.meta.url)), "public");
+
 const configPointCutConfig = {
   name: "configuration variants",
   variantGlobs: ["./src/routes/config/__variants__/*/*/*.jsx"],
@@ -17,7 +19,7 @@ const configPointCutConfig = {
 };
 
 const common = {
-  mode: "production",
+  mode: "development",
   devtool: "source-map",
   experiments: {
     outputModule: true
@@ -117,8 +119,9 @@ const config = [
     ...common,
     output: {
       ...common.output,
-      path: resolve(dirname(fileURLToPath(import.meta.url)), "public"),
-      filename: "main.mjs"
+      path: publicPath,
+      filename: "main.mjs",
+      clean: true
     },
     plugins: [
       new MiniCssExtractPlugin(),
@@ -134,14 +137,14 @@ const config = [
         },
         ...common.module.rules
       ]
-    },
-    ...common
+    }
   },
   {
     entry: "./src/routes/parallel-folder-convention/client.js",
     target: "web",
+    ...common,
     output: {
-      path: resolve(dirname(fileURLToPath(import.meta.url)), "public"),
+      path: publicPath,
       filename: "parallel-folder-convention.js"
     },
     plugins: [
@@ -154,8 +157,7 @@ const config = [
       new TogglePointInjectionPlugin({
         pointCuts: parallelFolderConventionPointCutConfig
       })
-    ],
-    ...common
+    ]
   }
 ];
 
