@@ -1,5 +1,4 @@
 import { win32, posix } from "path";
-// eslint-disable-next-line import/no-unresolved -- https://github.com/import-js/eslint-plugin-import/issues/1810
 import loadStrategyFactory from "@asos/web-toggle-point-webpack/moduleLoadStrategyFactories/staticLoadStrategyFactory";
 
 const toggleHandlerFactoryModuleSpecifier =
