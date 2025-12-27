@@ -1,5 +1,4 @@
 bin/*
 public/*
-dist/*
 /test-results/
 /playwright-report/
